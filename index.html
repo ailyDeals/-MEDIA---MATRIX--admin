@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>​🪙 GOLD-MINE BD 🪙 Admin</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
+        body { font-family: 'Inter', sans-serif; background: #f1f5f9; }
+        .tab-box { animation: fadeIn 0.3s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body class="pb-24">
+
+    <header class="bg-slate-900 text-white p-6 text-center border-b-4 border-amber-500 shadow-2xl">
+        <h1 class="text-2xl font-black italic">​🪙 GOLD-MINE BD 🪙 <span class="text-amber-500">CONTROL</span></h1>
+        <p class="text-[10px] uppercase tracking-widest opacity-60">Real-time System Monitor</p>
+    </header>
+
+    <nav class="flex justify-around bg-white border-b sticky top-0 z-50 shadow-md overflow-x-auto">
+        <button onclick="tab('dep')" id="t-dep" class="py-4 px-4 font-bold text-[10px] border-b-2 border-amber-600 text-amber-600 uppercase">Deposits</button>
+        <button onclick="tab('wit')" id="t-wit" class="py-4 px-4 font-bold text-[10px] border-b-2 border-transparent uppercase">Withdraws</button>
+        <button onclick="tab('usr')" id="t-usr" class="py-4 px-4 font-bold text-[10px] border-b-2 border-transparent uppercase">Users List</button>
+        <button onclick="tab('plans')" id="t-plans" class="py-4 px-4 font-bold text-[10px] border-b-2 border-transparent uppercase">Plans</button>
+        <button onclick="tab('set')" id="t-set" class="py-4 px-4 font-bold text-[10px] border-b-2 border-transparent uppercase">Settings</button>
+    </nav>
+
+    <main class="p-4 max-w-2xl mx-auto">
+        
+        <div id="usr" class="tab-box hidden space-y-4">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="font-black text-slate-800 text-sm uppercase">Active Members</h2>
+                <span id="user-count" class="bg-amber-500 text-white text-[10px] font-black px-3 py-1 rounded-full">0 Users</span>
+            </div>
+            <div id="user-list" class="space-y-3">
+                </div>
+        </div>
+
+        <div id="plans" class="tab-box hidden space-y-6">
+            <div class="bg-white p-6 rounded-[2rem] shadow-lg border border-slate-100">
+                <h3 class="font-black text-slate-800 mb-4 text-sm uppercase">Add New Investment Plan</h3>
+                <div class="grid grid-cols-2 gap-3">
+                    <input id="p-title" type="text" placeholder="Title" class="p-3 bg-slate-50 border rounded-xl outline-none text-xs font-bold">
+                    <input id="p-price" type="number" placeholder="Price ৳" class="p-3 bg-slate-50 border rounded-xl outline-none text-xs font-bold">
+                    <input id="p-daily" type="number" placeholder="Daily ৳" class="p-3 bg-slate-50 border rounded-xl outline-none text-xs font-bold">
+                    <input id="p-days" type="number" placeholder="Days" class="p-3 bg-slate-50 border rounded-xl outline-none text-xs font-bold">
+                </div>
+                <button onclick="addNewPlan()" class="w-full mt-4 py-3 bg-amber-500 text-white font-black rounded-xl uppercase text-[10px] tracking-widest">Create Plan</button>
+            </div>
+            <div id="admin-plans-list" class="space-y-3"></div>
+        </div>
+
+        <div id="dep" class="tab-box space-y-4">
+            <div id="deposit-list" class="space-y-4"></div>
+        </div>
+        <div id="wit" class="tab-box hidden space-y-4">
+            <div id="withdraw-list" class="space-y-4"></div>
+        </div>
+        <div id="set" class="tab-box hidden space-y-4">
+            <div class="bg-white p-6 rounded-[2rem] shadow-lg space-y-4">
+                <h3 class="font-black text-slate-800 border-b pb-2">App Configuration</h3>
+                <textarea id="s-notice" placeholder="Notice Popup Message" class="w-full p-4 bg-slate-50 border rounded-2xl outline-none text-sm"></textarea>
+                <div class="grid grid-cols-2 gap-2">
+                    <input id="s-bk" type="tel" placeholder="bKash No" class="p-3 bg-slate-50 border rounded-xl outline-none text-xs">
+                    <input id="s-ng" type="tel" placeholder="Nagad No" class="p-3 bg-slate-50 border rounded-xl outline-none text-xs">
+                </div>
+                <input id="s-tele" type="text" placeholder="Telegram Link" class="w-full p-3 bg-slate-50 border rounded-xl outline-none text-xs">
+                <input id="s-wa" type="tel" placeholder="WhatsApp Number" class="w-full p-3 bg-slate-50 border rounded-xl outline-none text-xs">
+                <button onclick="saveSettings()" class="w-full py-4 bg-slate-900 text-amber-500 font-black rounded-2xl uppercase text-[10px]">Save Global Settings</button>
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        const firebaseConfig = { apiKey: "AIzaSyDXD_ANF89k7StmGJ1Xz55nGUOB3ajMoF4", authDomain: "smartinvestpro-c659f.firebaseapp.com", databaseURL: "https://smartinvestpro-c659f-default-rtdb.firebaseio.com", projectId: "smartinvestpro-c659f", storageBucket: "smartinvestpro-c659f.firebasestorage.app", messagingSenderId: "294616388438", appId: "1:294616388438:web:54250014b8625fb50c3cf7" };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+
+        function tab(id) {
+            document.querySelectorAll('.tab-box').forEach(b => b.classList.add('hidden'));
+            document.getElementById(id).classList.remove('hidden');
+            document.querySelectorAll('nav button').forEach(b => b.classList.remove('border-amber-600', 'text-amber-600'));
+            document.getElementById('t-'+id).classList.add('border-amber-600', 'text-amber-600');
+        }
+
+        // --- USER MONITOR LOGIC ---
+        db.ref('users').on('value', snap => {
+            let html = '';
+            let count = 0;
+            snap.forEach(child => {
+                const user = child.val();
+                count++;
+                html += `
+                <div class="bg-white p-4 rounded-3xl shadow-sm border border-slate-100 flex justify-between items-center">
+                    <div>
+                        <p class="font-black text-slate-800 text-xs">${user.name}</p>
+                        <p class="text-[10px] text-slate-400 font-bold">${user.phone}</p>
+                        <p class="text-[9px] bg-amber-50 text-amber-600 px-2 rounded mt-1 inline-block font-black">${user.userId}</p>
+                    </div>
+                    <div class="text-right">
+                        <p class="font-black text-green-600 text-sm">৳${(user.balance || 0).toFixed(2)}</p>
+                        <button onclick="editBalance('${child.key}', ${user.balance || 0})" class="text-[8px] bg-slate-900 text-white px-2 py-1 rounded uppercase font-bold mt-1">Edit Balance</button>
+                    </div>
+                </div>`;
+            });
+            document.getElementById('user-list').innerHTML = html || "<p class='text-center py-10 opacity-30'>No users found</p>";
+            document.getElementById('user-count').innerText = count + " Users";
+        });
+
+        async function editBalance(phone, current) {
+            const newBal = prompt("Enter new balance for " + phone, current);
+            if(newBal !== null) {
+                await db.ref('users/' + phone).update({ balance: parseFloat(newBal) });
+                alert("Balance Updated!");
+            }
+        }
+
+        // (বাকি সব ফাংশন যেমন: addNewPlan, deletePlan, approveDep, rejectReq, saveSettings আগের মতোই থাকবে)
+        // ... (আগের কোডের ফাংশনগুলো এখানে থাকবে) ...
+
+        // --- DEPOSIT MONITOR ---
+        db.ref('requests/deposits').on('value', snap => {
+            let html = '';
+            snap.forEach(item => {
+                const req = item.val();
+                if(req.status === 'Pending') {
+                    html += `
+                    <div class="bg-white p-5 rounded-3xl shadow-sm border-l-8 border-amber-500">
+                        <div class="flex justify-between items-center mb-2">
+                            <h4 class="font-black text-lg">৳${req.amount}</h4>
+                            <span class="text-[9px] font-black bg-slate-100 px-3 py-1 rounded-full uppercase">${req.method}</span>
+                        </div>
+                        <p class="text-[10px] font-bold text-slate-500">USER: ${req.phone}</p>
+                        <p class="text-[9px] bg-amber-50 p-2 rounded-xl font-mono text-amber-700 break-all my-3 italic">TXID: ${req.tx}</p>
+                        <div class="flex gap-2">
+                            <button onclick="approveDep('${item.key}', '${req.phone}', ${req.amount})" class="flex-1 bg-green-500 text-white py-3 rounded-xl text-[10px] font-black uppercase">Approve</button>
+                            <button onclick="rejectReq('deposits', '${item.key}')" class="flex-1 bg-rose-50 text-rose-500 py-3 rounded-xl text-[10px] font-black uppercase">Reject</button>
+                        </div>
+                    </div>`;
+                }
+            });
+            document.getElementById('deposit-list').innerHTML = html || "<p class='text-center py-10 opacity-30'>No Pending Deposits</p>";
+        });
+
+        async function approveDep(id, phone, amt) {
+            const userRef = db.ref('users/' + phone);
+            const userSnap = await userRef.once('value');
+            if(userSnap.exists()){
+                const currentBalance = userSnap.val().balance || 0;
+                await userRef.update({ balance: currentBalance + amt });
+                await db.ref('requests/deposits/' + id).update({ status: 'Success' });
+            }
+        }
+
+        db.ref('requests/withdraws').on('value', snap => {
+            let html = '';
+            snap.forEach(item => {
+                const req = item.val();
+                if(req.status === 'Pending') {
+                    html += `<div class="bg-white p-5 rounded-3xl shadow-sm border-l-8 border-rose-500">
+                        <div class="flex justify-between items-center mb-2"><h4 class="font-black text-rose-600">৳${req.amount}</h4><span class="text-[9px] font-black uppercase">Payout</span></div>
+                        <p class="text-[10px] font-bold text-slate-800 uppercase">Receiver: ${req.receiver}</p>
+                        <div class="flex gap-2 mt-4"><button onclick="rejectReq('withdraws', '${item.key}', 'Success')" class="flex-1 bg-slate-900 text-amber-500 py-3 rounded-xl text-[10px] font-black uppercase">Mark Paid</button><button onclick="rejectReq('withdraws', '${item.key}')" class="flex-1 bg-rose-50 text-rose-500 py-3 rounded-xl text-[10px] font-black uppercase">Reject</button></div>
+                    </div>`;
+                }
+            });
+            document.getElementById('withdraw-list').innerHTML = html || "<p class='text-center py-10 opacity-30'>No Payout Requests</p>";
+        });
+
+        function rejectReq(path, id, status = 'Rejected') { db.ref('requests/' + path + '/' + id).update({ status: status }); }
+
+        async function addNewPlan() {
+            const title = document.getElementById('p-title').value;
+            const price = parseFloat(document.getElementById('p-price').value);
+            const daily = parseFloat(document.getElementById('p-daily').value);
+            const days = parseInt(document.getElementById('p-days').value);
+            if(title && price) {
+                await db.ref('appPlans').push({ id: Date.now(), title, price, daily, days, icon: '💎' });
+                alert("Plan Added!");
+            }
+        }
+
+        db.ref('appPlans').on('value', snap => {
+            let html = '';
+            snap.forEach(child => {
+                const p = child.val();
+                html += `<div class="bg-white p-4 rounded-2xl flex justify-between items-center shadow-sm border border-slate-100">
+                    <div><p class="font-black text-slate-800 text-xs">${p.title}</p><p class="text-[9px] text-slate-400">৳${p.price} - ৳${p.daily}/day</p></div>
+                    <button onclick="db.ref('appPlans/${child.key}').remove()" class="text-rose-500 p-2"><i class="fas fa-trash"></i></button>
+                </div>`;
+            });
+            document.getElementById('admin-plans-list').innerHTML = html;
+        });
+
+        async function saveSettings() {
+            await db.ref('appSettings').update({
+                notice: document.getElementById('s-notice').value,
+                bkash: document.getElementById('s-bk').value,
+                nagad: document.getElementById('s-ng').value,
+                telegram: document.getElementById('s-tele').value,
+                whatsapp: document.getElementById('s-wa').value
+            });
+            alert("Settings Saved!");
+        }
+
+        db.ref('appSettings').once('value', snap => {
+            if(snap.exists()){
+                const d = snap.val();
+                document.getElementById('s-notice').value = d.notice || '';
+                document.getElementById('s-bk').value = d.bkash || '';
+                document.getElementById('s-ng').value = d.nagad || '';
+                document.getElementById('s-tele').value = d.telegram || '';
+                document.getElementById('s-wa').value = d.whatsapp || '';
+            }
+        });
+    </script>
+</body>
+</html>
