@@ -1,224 +1,1233 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>​🪙 GOLD-MINE BD 🪙 Admin</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
-        body { font-family: 'Inter', sans-serif; background: #f1f5f9; }
-        .tab-box { animation: fadeIn 0.3s ease; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>​ ​❖ ⸢MEDIA MATRIX⸧ ❖ Admin </title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
+<style>
+:root {
+  --gold: #F0B429;
+  --gold-light: #FFD166;
+  --gold-dark: #C88400;
+  --gold-glow: rgba(240,180,41,0.18);
+  --bg: #0A0B0F;
+  --bg2: #111318;
+  --bg3: #181920;
+  --bg4: #1F2028;
+  --bg5: #272834;
+  --text: #EEEEF5;
+  --text2: #A8A8C0;
+  --text3: #55566A;
+  --green: #06D6A0;
+  --green-bg: rgba(6,214,160,0.10);
+  --red: #EF476F;
+  --red-bg: rgba(239,71,111,0.10);
+  --blue: #4CC9F0;
+  --blue-bg: rgba(76,201,240,0.10);
+  --purple: #9B5DE5;
+  --purple-bg: rgba(155,93,229,0.10);
+  --border: rgba(255,255,255,0.07);
+  --border2: rgba(255,255,255,0.12);
+  --radius: 20px;
+  --radius-sm: 14px;
+  --radius-xs: 10px;
+  --nav-h: 70px;
+}
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+html, body {
+  height:100%; background:var(--bg); font-family:'Outfit',sans-serif;
+  color:var(--text); overflow:hidden; user-select:none;
+  -webkit-font-smoothing:antialiased;
+}
+::-webkit-scrollbar { width:3px; }
+::-webkit-scrollbar-track { background:transparent; }
+::-webkit-scrollbar-thumb { background:var(--bg5); border-radius:10px; }
+
+/* ── LAYOUT ── */
+#app { height:100vh; display:flex; flex-direction:column; overflow:hidden; }
+
+/* ── LOGIN ── */
+#login-screen {
+  position:fixed; inset:0; z-index:9999;
+  background: radial-gradient(ellipse 80% 60% at 50% -10%, rgba(240,180,41,0.15) 0%, transparent 65%), var(--bg);
+  display:flex; flex-direction:column; align-items:center; justify-content:center; padding:24px;
+}
+.login-logo {
+  width:76px; height:76px; border-radius:24px; margin:0 auto 16px;
+  background:linear-gradient(135deg, var(--gold-light), var(--gold), var(--gold-dark));
+  display:flex; align-items:center; justify-content:center; font-size:32px;
+  box-shadow:0 8px 40px rgba(240,180,41,0.4), 0 0 0 1px rgba(240,180,41,0.2);
+  animation:popIn .6s cubic-bezier(.34,1.56,.64,1);
+}
+@keyframes popIn { from{transform:scale(0.3) rotate(-20deg);opacity:0;} to{transform:scale(1) rotate(0);opacity:1;} }
+.login-title {
+  font-size:26px; font-weight:900; letter-spacing:-0.5px; text-align:center; margin-bottom:4px;
+  background:linear-gradient(135deg, var(--gold-light), var(--gold));
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+}
+.login-sub { font-size:10px; color:var(--text3); text-transform:uppercase; letter-spacing:3px; text-align:center; margin-bottom:32px; font-weight:700; }
+.login-card {
+  width:100%; max-width:340px; background:var(--bg2);
+  border:1px solid var(--border2); border-radius:24px; padding:24px;
+  box-shadow:0 24px 80px rgba(0,0,0,0.6);
+}
+.admin-badge {
+  display:inline-flex; align-items:center; gap:6px; background:rgba(239,71,111,0.12);
+  border:1px solid rgba(239,71,111,0.25); border-radius:8px; padding:6px 14px;
+  font-size:10px; font-weight:800; color:var(--red); text-transform:uppercase; letter-spacing:1px;
+  margin:0 auto 20px; display:flex; justify-content:center; width:fit-content; margin:0 auto 20px;
+}
+
+/* ── HEADER ── */
+#header {
+  flex-shrink:0; background:rgba(10,11,15,0.97); border-bottom:1px solid var(--border);
+  backdrop-filter:blur(24px); padding:12px 16px; z-index:200;
+}
+.header-row { display:flex; justify-content:space-between; align-items:center; }
+.header-brand { display:flex; align-items:center; gap:10px; }
+.header-logo {
+  width:36px; height:36px; border-radius:12px;
+  background:linear-gradient(135deg, var(--gold-light), var(--gold));
+  display:flex; align-items:center; justify-content:center; font-size:16px;
+  box-shadow:0 4px 16px rgba(240,180,41,0.3);
+}
+.header-brand-name { font-size:16px; font-weight:900; letter-spacing:-0.3px; }
+.header-brand-name span { color:var(--gold); }
+.header-badge {
+  background:var(--red-bg); color:var(--red); font-size:8px; font-weight:800;
+  padding:3px 8px; border-radius:6px; text-transform:uppercase; letter-spacing:1px;
+}
+.header-right { display:flex; align-items:center; gap:8px; }
+.logout-btn {
+  background:var(--red-bg); border:1px solid rgba(239,71,111,0.2); border-radius:10px;
+  color:var(--red); padding:8px 14px; font-family:'Outfit',sans-serif; font-size:11px; font-weight:700;
+  cursor:pointer; text-transform:uppercase; letter-spacing:.6px; display:flex; align-items:center; gap:6px;
+}
+
+/* ── SCROLL AREA ── */
+.scroll-area {
+  flex:1; overflow-y:auto; -webkit-overflow-scrolling:touch;
+  padding-bottom:calc(var(--nav-h) + 16px);
+}
+
+/* ── BOTTOM NAV ── */
+#bottom-nav {
+  position:fixed; bottom:0; left:0; right:0; height:var(--nav-h);
+  background:rgba(13,14,20,0.98); border-top:1px solid var(--border);
+  backdrop-filter:blur(30px); display:flex; align-items:center;
+  padding:0 4px 6px; z-index:500;
+}
+.nav-btn {
+  flex:1; display:flex; flex-direction:column; align-items:center; gap:4px;
+  padding:8px 4px; cursor:pointer; background:none; border:none; color:var(--text3);
+  transition:all .2s; position:relative;
+}
+.nav-btn span { font-size:8px; font-weight:700; text-transform:uppercase; letter-spacing:.7px; font-family:'Outfit',sans-serif; }
+.nav-btn i { font-size:17px; transition:all .2s; }
+.nav-btn.active { color:var(--gold); }
+.nav-btn.active i { filter:drop-shadow(0 0 8px rgba(240,180,41,.5)); transform:translateY(-1px); }
+.nav-badge {
+  position:absolute; top:4px; right:14px; min-width:16px; height:16px;
+  background:var(--red); color:#fff; border-radius:8px; font-size:8px; font-weight:900;
+  display:flex; align-items:center; justify-content:center; padding:0 4px;
+}
+
+/* ── PAGES ── */
+.page { display:none; }
+.page.active { display:block; animation:fadeUp .3s cubic-bezier(.4,0,.2,1); }
+@keyframes fadeUp { from{opacity:0;transform:translateY(12px);} to{opacity:1;transform:translateY(0);} }
+
+/* ── SHARED ── */
+.page-pad { padding:16px; }
+.section-title {
+  font-size:18px; font-weight:900; margin-bottom:4px; display:flex; align-items:center; gap:8px;
+}
+.section-sub { font-size:11px; color:var(--text2); margin-bottom:16px; }
+
+/* STAT CARDS */
+.stats-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:16px; }
+.stat-card {
+  background:var(--bg3); border:1px solid var(--border); border-radius:var(--radius-sm);
+  padding:14px; position:relative; overflow:hidden;
+}
+.stat-card-glow {
+  position:absolute; top:-20px; right:-20px; width:80px; height:80px;
+  border-radius:50%; pointer-events:none;
+}
+.stat-label { font-size:8px; font-weight:700; text-transform:uppercase; letter-spacing:1.4px; color:var(--text3); margin-bottom:6px; }
+.stat-value { font-size:22px; font-weight:900; }
+.stat-value.gold { color:var(--gold); }
+.stat-value.green { color:var(--green); }
+.stat-value.red { color:var(--red); }
+.stat-value.blue { color:var(--blue); }
+.stat-sub { font-size:9px; color:var(--text3); margin-top:4px; font-weight:600; }
+
+/* CARDS */
+.card {
+  background:var(--bg3); border:1px solid var(--border);
+  border-radius:var(--radius); padding:16px; margin-bottom:12px;
+}
+.card-title { font-size:14px; font-weight:800; margin-bottom:14px; display:flex; align-items:center; gap:8px; }
+.card-title i { color:var(--gold); font-size:13px; }
+
+/* INPUTS */
+.inp-group { margin-bottom:12px; }
+.inp-label { font-size:9px; font-weight:700; color:var(--text3); text-transform:uppercase; letter-spacing:1.2px; margin-bottom:6px; display:block; }
+.inp {
+  width:100%; padding:13px 14px; background:var(--bg4); border:1.5px solid var(--border);
+  border-radius:var(--radius-xs); color:var(--text); font-family:'Outfit',sans-serif;
+  font-size:14px; font-weight:500; outline:none; transition:all .2s;
+  user-select:text; -webkit-user-select:text;
+}
+.inp:focus { border-color:var(--gold); background:rgba(240,180,41,0.04); }
+.inp::placeholder { color:var(--text3); }
+select.inp { cursor:pointer; }
+select.inp option { background:var(--bg4); }
+
+/* BUTTONS */
+.btn-gold {
+  width:100%; padding:14px; border:none; border-radius:var(--radius-sm);
+  background:linear-gradient(135deg, var(--gold-light), var(--gold), var(--gold-dark));
+  color:#0A0B0F; font-family:'Outfit',sans-serif; font-size:13px; font-weight:800;
+  cursor:pointer; letter-spacing:.7px; text-transform:uppercase;
+  box-shadow:0 6px 24px rgba(240,180,41,.25); transition:all .15s;
+  display:flex; align-items:center; justify-content:center; gap:8px;
+}
+.btn-gold:active { transform:scale(.97); }
+.btn-sm {
+  padding:8px 16px; border:none; border-radius:8px; font-family:'Outfit',sans-serif;
+  font-size:10px; font-weight:800; cursor:pointer; letter-spacing:.5px; text-transform:uppercase;
+  transition:all .15s; display:inline-flex; align-items:center; gap:5px;
+}
+.btn-sm:active { transform:scale(.95); }
+.btn-green { background:var(--green-bg); color:var(--green); border:1px solid rgba(6,214,160,0.25); }
+.btn-red { background:var(--red-bg); color:var(--red); border:1px solid rgba(239,71,111,0.25); }
+.btn-blue { background:var(--blue-bg); color:var(--blue); border:1px solid rgba(76,201,240,0.25); }
+.btn-gold-sm { background:rgba(240,180,41,0.12); color:var(--gold); border:1px solid rgba(240,180,41,0.25); }
+.btn-outline-sm {
+  padding:8px 16px; border:1.5px solid var(--border2); border-radius:8px;
+  background:transparent; color:var(--text2); font-family:'Outfit',sans-serif;
+  font-size:10px; font-weight:700; cursor:pointer; letter-spacing:.5px;
+  text-transform:uppercase; transition:all .15s;
+}
+.btn-outline-sm:active { background:var(--bg4); }
+
+/* TABS */
+.tab-row { display:flex; gap:6px; padding:0 16px 12px; overflow-x:auto; }
+.tab-pill {
+  flex-shrink:0; padding:8px 16px; border-radius:100px; border:1.5px solid var(--border);
+  background:transparent; color:var(--text3); font-family:'Outfit',sans-serif;
+  font-size:10px; font-weight:700; cursor:pointer; text-transform:uppercase; letter-spacing:.7px;
+  transition:all .2s;
+}
+.tab-pill.active { background:rgba(240,180,41,0.1); border-color:var(--gold); color:var(--gold); }
+
+/* USER ROW */
+.user-row {
+  background:var(--bg3); border:1px solid var(--border); border-radius:16px;
+  padding:14px; margin-bottom:8px; display:flex; gap:12px; align-items:center;
+}
+.user-avatar {
+  width:44px; height:44px; border-radius:14px; flex-shrink:0;
+  background:linear-gradient(135deg, var(--gold-light), var(--gold));
+  display:flex; align-items:center; justify-content:center; font-size:18px;
+}
+.user-info { flex:1; min-width:0; }
+.user-name { font-size:14px; font-weight:800; margin-bottom:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.user-phone { font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--text3); font-weight:500; margin-bottom:4px; }
+.user-meta { display:flex; gap:8px; flex-wrap:wrap; }
+.meta-chip {
+  font-size:9px; font-weight:700; padding:3px 8px; border-radius:6px;
+  text-transform:uppercase; letter-spacing:.5px;
+}
+.meta-balance { background:rgba(240,180,41,0.12); color:var(--gold); }
+.meta-profit { background:var(--green-bg); color:var(--green); }
+.meta-invested { background:var(--blue-bg); color:var(--blue); }
+.user-right { text-align:right; flex-shrink:0; }
+.user-id { font-family:'JetBrains Mono',monospace; font-size:9px; color:var(--text3); margin-bottom:8px; }
+.user-actions { display:flex; flex-direction:column; gap:4px; }
+
+/* REQUEST ROW */
+.req-row {
+  background:var(--bg3); border:1px solid var(--border); border-radius:16px;
+  padding:14px; margin-bottom:8px;
+}
+.req-top { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:10px; }
+.req-info {}
+.req-amount { font-size:18px; font-weight:900; color:var(--text); }
+.req-amount.green { color:var(--green); }
+.req-amount.gold { color:var(--gold); }
+.req-meta { font-size:10px; color:var(--text3); margin-top:3px; }
+.status-badge {
+  font-size:8px; font-weight:800; padding:5px 10px; border-radius:7px;
+  text-transform:uppercase; letter-spacing:.7px; white-space:nowrap;
+}
+.s-pending { background:rgba(240,180,41,0.12); color:var(--gold); }
+.s-approved { background:var(--green-bg); color:var(--green); }
+.s-rejected { background:var(--red-bg); color:var(--red); }
+.req-actions { display:flex; gap:6px; margin-top:10px; }
+.req-detail-row { display:flex; gap:6px; margin-top:6px; flex-wrap:wrap; }
+.req-tag {
+  display:flex; align-items:center; gap:4px; background:var(--bg4);
+  border:1px solid var(--border); border-radius:8px; padding:5px 10px;
+  font-size:10px; font-weight:700; color:var(--text2);
+}
+.req-tag i { font-size:9px; color:var(--gold); }
+
+/* PLAN CARD */
+.plan-admin-card {
+  background:var(--bg3); border:1px solid var(--border); border-radius:16px;
+  padding:14px; margin-bottom:8px; display:flex; gap:12px; align-items:center;
+}
+.plan-icon-wrap {
+  width:50px; height:50px; border-radius:14px; flex-shrink:0;
+  background:linear-gradient(135deg, var(--bg4), var(--bg5));
+  display:flex; align-items:center; justify-content:center; font-size:22px; overflow:hidden;
+}
+.plan-icon-wrap img { width:100%; height:100%; object-fit:cover; }
+.plan-admin-info { flex:1; min-width:0; }
+.plan-admin-name { font-size:14px; font-weight:800; margin-bottom:3px; }
+.plan-admin-price { font-size:11px; color:var(--gold); font-weight:700; }
+.plan-admin-stats { display:flex; gap:8px; margin-top:4px; flex-wrap:wrap; }
+.plan-stat-chip { font-size:9px; font-weight:700; color:var(--text3); background:var(--bg4); padding:3px 8px; border-radius:6px; }
+.plan-admin-right { display:flex; flex-direction:column; gap:6px; align-items:flex-end; }
+
+/* METHOD CARD */
+.method-admin-row {
+  background:var(--bg3); border:1px solid var(--border); border-radius:14px;
+  padding:14px; margin-bottom:8px; display:flex; gap:12px; align-items:center;
+}
+.method-logo {
+  width:42px; height:42px; border-radius:12px; flex-shrink:0;
+  background:var(--bg4); display:flex; align-items:center; justify-content:center; font-size:18px; overflow:hidden;
+}
+.method-logo img { width:100%; height:100%; object-fit:cover; border-radius:12px; }
+.method-admin-info { flex:1; }
+.method-admin-name { font-size:14px; font-weight:800; }
+.method-admin-num { font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--text3); margin-top:2px; }
+.method-status { font-size:9px; font-weight:800; padding:3px 9px; border-radius:6px; text-transform:uppercase; margin-top:4px; display:inline-block; }
+.m-active { background:var(--green-bg); color:var(--green); }
+.m-inactive { background:var(--red-bg); color:var(--red); }
+
+/* EMPTY */
+.empty-box { text-align:center; padding:48px 20px; color:var(--text3); }
+.empty-box i { font-size:40px; display:block; margin-bottom:12px; opacity:.3; }
+.empty-box p { font-size:12px; }
+
+/* DIVIDER */
+.divider { height:1px; background:var(--border); margin:12px 0; }
+
+/* TOAST */
+#toast {
+  position:fixed; top:18px; left:50%; transform:translateX(-50%) translateY(-90px);
+  background:var(--bg2); border:1px solid var(--border2); border-radius:14px;
+  padding:12px 20px; z-index:99999; font-size:12px; font-weight:700;
+  display:flex; align-items:center; gap:8px; transition:transform .35s cubic-bezier(.34,1.56,.64,1);
+  max-width:290px; width:90vw; justify-content:center;
+  box-shadow:0 8px 40px rgba(0,0,0,0.6); font-family:'Outfit',sans-serif;
+}
+#toast.show { transform:translateX(-50%) translateY(0); }
+#toast.s { border-color:rgba(6,214,160,0.4); color:var(--green); }
+#toast.e { border-color:rgba(239,71,111,0.4); color:var(--red); }
+#toast.i { border-color:rgba(240,180,41,0.4); color:var(--gold); }
+
+/* MODAL */
+.modal-overlay {
+  position:fixed; inset:0; background:rgba(0,0,0,0.88);
+  z-index:8888; display:flex; align-items:center; justify-content:center; padding:20px;
+  backdrop-filter:blur(10px);
+}
+.modal-box {
+  background:var(--bg2); border:1px solid var(--border2); border-radius:24px;
+  padding:24px; max-width:340px; width:100%; animation:fadeUp .3s ease;
+}
+.modal-title { font-size:17px; font-weight:900; margin-bottom:14px; display:flex; align-items:center; gap:8px; }
+.modal-title i { color:var(--gold); }
+.modal-actions { display:flex; gap:8px; margin-top:16px; }
+.modal-actions button { flex:1; }
+
+/* SCROLLABLE TABS SECTION */
+.user-search { padding:0 16px 12px; }
+.user-search .inp { padding:11px 14px; font-size:13px; }
+
+/* BALANCE EDIT */
+.balance-edit-row { display:flex; gap:8px; align-items:center; }
+.balance-edit-row .inp { flex:1; margin-bottom:0; }
+</style>
 </head>
-<body class="pb-24">
+<body>
 
-    <header class="bg-slate-900 text-white p-6 text-center border-b-4 border-amber-500 shadow-2xl">
-        <h1 class="text-2xl font-black italic">​🪙 GOLD-MINE BD 🪙 <span class="text-amber-500">CONTROL</span></h1>
-        <p class="text-[10px] uppercase tracking-widest opacity-60">Real-time System Monitor</p>
-    </header>
+<!-- TOAST -->
+<div id="toast"></div>
 
-    <nav class="flex justify-around bg-white border-b sticky top-0 z-50 shadow-md overflow-x-auto">
-        <button onclick="tab('dep')" id="t-dep" class="py-4 px-4 font-bold text-[10px] border-b-2 border-amber-600 text-amber-600 uppercase">Deposits</button>
-        <button onclick="tab('wit')" id="t-wit" class="py-4 px-4 font-bold text-[10px] border-b-2 border-transparent uppercase">Withdraws</button>
-        <button onclick="tab('usr')" id="t-usr" class="py-4 px-4 font-bold text-[10px] border-b-2 border-transparent uppercase">Users List</button>
-        <button onclick="tab('plans')" id="t-plans" class="py-4 px-4 font-bold text-[10px] border-b-2 border-transparent uppercase">Plans</button>
-        <button onclick="tab('set')" id="t-set" class="py-4 px-4 font-bold text-[10px] border-b-2 border-transparent uppercase">Settings</button>
-    </nav>
+<!-- ══════════════ LOGIN ══════════════ -->
+<div id="login-screen">
+  <div class="login-logo">🛡️</div>
+  <div class="login-title">ADMIN PANEL</div>
+  <div class="login-sub">Gold-Mine Pro Control Center</div>
+  <div class="login-card">
+    <div class="admin-badge"><i class="fas fa-shield-alt"></i> Restricted Access</div>
+    <div class="inp-group">
+      <label class="inp-label">Admin Username</label>
+      <input id="l-user" type="text" class="inp" placeholder="Enter username">
+    </div>
+    <div class="inp-group" style="margin-bottom:20px;">
+      <label class="inp-label">Admin Password</label>
+      <input id="l-pass" type="password" class="inp" placeholder="Enter password">
+    </div>
+    <button onclick="adminLogin()" class="btn-gold">
+      <i class="fas fa-unlock-alt"></i> Access Panel
+    </button>
+  </div>
+</div>
 
-    <main class="p-4 max-w-2xl mx-auto">
-        
-        <div id="usr" class="tab-box hidden space-y-4">
-            <div class="flex justify-between items-center mb-4">
-                <h2 class="font-black text-slate-800 text-sm uppercase">Active Members</h2>
-                <span id="user-count" class="bg-amber-500 text-white text-[10px] font-black px-3 py-1 rounded-full">0 Users</span>
+<!-- ══════════════ MAIN APP ══════════════ -->
+<div id="app" style="display:none;">
+
+  <!-- HEADER -->
+  <div id="header">
+    <div class="header-row">
+      <div class="header-brand">
+        <div class="header-logo">⚙️</div>
+        <div>
+          <div class="header-brand-name">GOLD-MINE <span>ADMIN</span></div>
+          <div class="header-badge">Control Panel</div>
+        </div>
+      </div>
+      <div class="header-right">
+        <div style="text-align:right;margin-right:10px;">
+          <div style="font-size:8px;color:var(--text3);font-weight:700;text-transform:uppercase;letter-spacing:1px;">Total Users</div>
+          <div style="font-size:16px;font-weight:900;color:var(--gold);" id="hdr-users">0</div>
+        </div>
+        <button onclick="adminLogout()" class="logout-btn"><i class="fas fa-power-off"></i></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCROLL -->
+  <div class="scroll-area">
+
+    <!-- ══ DASHBOARD ══ -->
+    <div id="page-dashboard" class="page active">
+      <div class="page-pad">
+        <div class="section-title"><i class="fas fa-chart-pie" style="color:var(--gold);font-size:16px;"></i> Dashboard</div>
+        <div class="section-sub">Live platform overview</div>
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-card-glow" style="background:radial-gradient(circle,rgba(240,180,41,0.12),transparent);"></div>
+            <div class="stat-label">Total Users</div>
+            <div class="stat-value gold" id="ds-users">0</div>
+            <div class="stat-sub">Registered accounts</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card-glow" style="background:radial-gradient(circle,rgba(6,214,160,0.1),transparent);"></div>
+            <div class="stat-label">Total Balance</div>
+            <div class="stat-value green" id="ds-balance">$0</div>
+            <div class="stat-sub">Across all users</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card-glow" style="background:radial-gradient(circle,rgba(76,201,240,0.1),transparent);"></div>
+            <div class="stat-label">Total Invested</div>
+            <div class="stat-value blue" id="ds-invested">$0</div>
+            <div class="stat-sub">Plans purchased</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card-glow" style="background:radial-gradient(circle,rgba(239,71,111,0.1),transparent);"></div>
+            <div class="stat-label">Pending Requests</div>
+            <div class="stat-value red" id="ds-pending">0</div>
+            <div class="stat-sub">Deposits + withdrawals</div>
+          </div>
+        </div>
+
+        <!-- Quick stats row -->
+        <div class="card">
+          <div class="card-title"><i class="fas fa-fire"></i> Today's Activity</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;">
+            <div style="text-align:center;">
+              <div style="font-size:20px;font-weight:900;color:var(--gold);" id="ds-dep-pending">0</div>
+              <div style="font-size:8px;color:var(--text3);font-weight:700;text-transform:uppercase;margin-top:3px;">Dep Pending</div>
             </div>
-            <div id="user-list" class="space-y-3">
-                </div>
-        </div>
-
-        <div id="plans" class="tab-box hidden space-y-6">
-            <div class="bg-white p-6 rounded-[2rem] shadow-lg border border-slate-100">
-                <h3 class="font-black text-slate-800 mb-4 text-sm uppercase">Add New Investment Plan</h3>
-                <div class="grid grid-cols-2 gap-3">
-                    <input id="p-title" type="text" placeholder="Title" class="p-3 bg-slate-50 border rounded-xl outline-none text-xs font-bold">
-                    <input id="p-price" type="number" placeholder="Price ৳" class="p-3 bg-slate-50 border rounded-xl outline-none text-xs font-bold">
-                    <input id="p-daily" type="number" placeholder="Daily ৳" class="p-3 bg-slate-50 border rounded-xl outline-none text-xs font-bold">
-                    <input id="p-days" type="number" placeholder="Days" class="p-3 bg-slate-50 border rounded-xl outline-none text-xs font-bold">
-                </div>
-                <button onclick="addNewPlan()" class="w-full mt-4 py-3 bg-amber-500 text-white font-black rounded-xl uppercase text-[10px] tracking-widest">Create Plan</button>
+            <div style="text-align:center;">
+              <div style="font-size:20px;font-weight:900;color:var(--red);" id="ds-with-pending">0</div>
+              <div style="font-size:8px;color:var(--text3);font-weight:700;text-transform:uppercase;margin-top:3px;">With Pending</div>
             </div>
-            <div id="admin-plans-list" class="space-y-3"></div>
+            <div style="font-size:20px;font-weight:900;color:var(--green);text-align:center;" id="ds-plans">0</div>
+          </div>
+          <div style="text-align:center;font-size:8px;color:var(--text3);font-weight:700;text-transform:uppercase;margin-top:-14px;padding-left:66.6%;">Active Nodes</div>
         </div>
 
-        <div id="dep" class="tab-box space-y-4">
-            <div id="deposit-list" class="space-y-4"></div>
+        <!-- App Settings -->
+        <div class="card">
+          <div class="card-title"><i class="fas fa-megaphone"></i> App Settings</div>
+          <div class="inp-group">
+            <label class="inp-label">Notice / Announcement</label>
+            <textarea id="s-notice" class="inp" rows="3" placeholder="Platform announcement shown on login..." style="resize:none;line-height:1.6;"></textarea>
+          </div>
+          <div class="inp-group" style="margin-bottom:16px;">
+            <label class="inp-label">Banner Image URL</label>
+            <input id="s-banner" type="url" class="inp" placeholder="https://... banner image link">
+          </div>
+          <button onclick="saveSettings()" class="btn-gold"><i class="fas fa-save"></i> Save Settings</button>
         </div>
-        <div id="wit" class="tab-box hidden space-y-4">
-            <div id="withdraw-list" class="space-y-4"></div>
-        </div>
-        <div id="set" class="tab-box hidden space-y-4">
-            <div class="bg-white p-6 rounded-[2rem] shadow-lg space-y-4">
-                <h3 class="font-black text-slate-800 border-b pb-2">App Configuration</h3>
-                <textarea id="s-notice" placeholder="Notice Popup Message" class="w-full p-4 bg-slate-50 border rounded-2xl outline-none text-sm"></textarea>
-                <div class="grid grid-cols-2 gap-2">
-                    <input id="s-bk" type="tel" placeholder="bKash No" class="p-3 bg-slate-50 border rounded-xl outline-none text-xs">
-                    <input id="s-ng" type="tel" placeholder="Nagad No" class="p-3 bg-slate-50 border rounded-xl outline-none text-xs">
-                </div>
-                <input id="s-tele" type="text" placeholder="Telegram Link" class="w-full p-3 bg-slate-50 border rounded-xl outline-none text-xs">
-                <input id="s-wa" type="tel" placeholder="WhatsApp Number" class="w-full p-3 bg-slate-50 border rounded-xl outline-none text-xs">
-                <button onclick="saveSettings()" class="w-full py-4 bg-slate-900 text-amber-500 font-black rounded-2xl uppercase text-[10px]">Save Global Settings</button>
+      </div>
+    </div>
+
+    <!-- ══ USERS ══ -->
+    <div id="page-users" class="page">
+      <div class="page-pad">
+        <div class="section-title"><i class="fas fa-users" style="color:var(--gold);font-size:16px;"></i> All Users</div>
+        <div class="section-sub" id="users-count-sub">Loading...</div>
+      </div>
+      <div class="user-search">
+        <input class="inp" type="text" id="search-inp" placeholder="🔍  Search by name, phone, ID..." oninput="filterUsers()" style="font-size:13px;">
+      </div>
+      <div id="users-list" style="padding:0 16px;">
+        <div class="empty-box"><i class="fas fa-spinner fa-spin"></i><p>Loading users...</p></div>
+      </div>
+    </div>
+
+    <!-- ══ DEPOSITS ══ -->
+    <div id="page-deposits" class="page">
+      <div class="page-pad">
+        <div class="section-title"><i class="fas fa-arrow-down-to-line" style="color:var(--gold);font-size:16px;"></i> Deposit Requests</div>
+        <div class="section-sub">Approve or reject incoming deposits</div>
+      </div>
+      <div class="tab-row">
+        <button class="tab-pill active" onclick="filterDeposits('Pending',this)">Pending</button>
+        <button class="tab-pill" onclick="filterDeposits('Approved',this)">Approved</button>
+        <button class="tab-pill" onclick="filterDeposits('Rejected',this)">Rejected</button>
+        <button class="tab-pill" onclick="filterDeposits('all',this)">All</button>
+      </div>
+      <div id="deposits-list" style="padding:0 16px;">
+        <div class="empty-box"><i class="fas fa-spinner fa-spin"></i><p>Loading...</p></div>
+      </div>
+    </div>
+
+    <!-- ══ WITHDRAWALS ══ -->
+    <div id="page-withdrawals" class="page">
+      <div class="page-pad">
+        <div class="section-title"><i class="fas fa-arrow-up-from-bracket" style="color:var(--gold);font-size:16px;"></i> Withdrawal Requests</div>
+        <div class="section-sub">Process user withdrawal requests</div>
+      </div>
+      <div class="tab-row">
+        <button class="tab-pill active" onclick="filterWithdrawals('Pending',this)">Pending</button>
+        <button class="tab-pill" onclick="filterWithdrawals('Approved',this)">Approved</button>
+        <button class="tab-pill" onclick="filterWithdrawals('Rejected',this)">Rejected</button>
+        <button class="tab-pill" onclick="filterWithdrawals('all',this)">All</button>
+      </div>
+      <div id="withdrawals-list" style="padding:0 16px;">
+        <div class="empty-box"><i class="fas fa-spinner fa-spin"></i><p>Loading...</p></div>
+      </div>
+    </div>
+
+    <!-- ══ PLANS ══ -->
+    <div id="page-plans" class="page">
+      <div class="page-pad">
+        <div class="section-title"><i class="fas fa-server" style="color:var(--gold);font-size:16px;"></i> Mining Plans</div>
+        <div class="section-sub">Manage available mining node plans</div>
+
+        <!-- Add plan card -->
+        <div class="card">
+          <div class="card-title"><i class="fas fa-plus-circle"></i> Add / Edit Plan</div>
+          <input type="hidden" id="plan-edit-key">
+          <div class="inp-group">
+            <label class="inp-label">Plan Title</label>
+            <input id="p-title" type="text" class="inp" placeholder="e.g. Gold Node Pro">
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+            <div class="inp-group">
+              <label class="inp-label">Price ($)</label>
+              <input id="p-price" type="number" class="inp" placeholder="10">
             </div>
+            <div class="inp-group">
+              <label class="inp-label">Daily Profit ($)</label>
+              <input id="p-daily" type="number" class="inp" placeholder="1.5">
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+            <div class="inp-group">
+              <label class="inp-label">Duration (days)</label>
+              <input id="p-days" type="number" class="inp" placeholder="30">
+            </div>
+            <div class="inp-group">
+              <label class="inp-label">Icon (emoji)</label>
+              <input id="p-icon" type="text" class="inp" placeholder="💎">
+            </div>
+          </div>
+          <div class="inp-group" style="margin-bottom:16px;">
+            <label class="inp-label">Plan Image URL (optional)</label>
+            <input id="p-image" type="url" class="inp" placeholder="https://...">
+          </div>
+          <button onclick="savePlan()" class="btn-gold"><i class="fas fa-save"></i> <span id="plan-btn-txt">Save Plan</span></button>
         </div>
 
-    </main>
+        <div style="font-size:13px;font-weight:800;margin-bottom:10px;">All Plans (<span id="plans-count">0</span>)</div>
+        <div id="plans-list">
+          <div class="empty-box"><i class="fas fa-spinner fa-spin"></i><p>Loading...</p></div>
+        </div>
+      </div>
+    </div>
 
-    <script>
-        const firebaseConfig = { apiKey: "AIzaSyDXD_ANF89k7StmGJ1Xz55nGUOB3ajMoF4", authDomain: "smartinvestpro-c659f.firebaseapp.com", databaseURL: "https://smartinvestpro-c659f-default-rtdb.firebaseio.com", projectId: "smartinvestpro-c659f", storageBucket: "smartinvestpro-c659f.firebasestorage.app", messagingSenderId: "294616388438", appId: "1:294616388438:web:54250014b8625fb50c3cf7" };
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.database();
+    <!-- ══ METHODS ══ -->
+    <div id="page-methods" class="page">
+      <div class="page-pad">
+        <div class="section-title"><i class="fas fa-credit-card" style="color:var(--gold);font-size:16px;"></i> Payment Methods</div>
+        <div class="section-sub">Manage deposit methods shown to users</div>
 
-        function tab(id) {
-            document.querySelectorAll('.tab-box').forEach(b => b.classList.add('hidden'));
-            document.getElementById(id).classList.remove('hidden');
-            document.querySelectorAll('nav button').forEach(b => b.classList.remove('border-amber-600', 'text-amber-600'));
-            document.getElementById('t-'+id).classList.add('border-amber-600', 'text-amber-600');
-        }
+        <div class="card">
+          <div class="card-title"><i class="fas fa-plus-circle"></i> Add / Edit Method</div>
+          <input type="hidden" id="method-edit-key">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+            <div class="inp-group">
+              <label class="inp-label">Method Name</label>
+              <input id="m-name" type="text" class="inp" placeholder="bKash">
+            </div>
+            <div class="inp-group">
+              <label class="inp-label">Icon (emoji)</label>
+              <input id="m-icon" type="text" class="inp" placeholder="📱">
+            </div>
+          </div>
+          <div class="inp-group">
+            <label class="inp-label">Account / Wallet Number</label>
+            <input id="m-number" type="text" class="inp" placeholder="01XXXXXXXXX">
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+            <div class="inp-group">
+              <label class="inp-label">Min Deposit ($)</label>
+              <input id="m-min" type="number" class="inp" placeholder="2">
+            </div>
+            <div class="inp-group">
+              <label class="inp-label">Status</label>
+              <select id="m-active" class="inp">
+                <option value="true">Active ✅</option>
+                <option value="false">Inactive ❌</option>
+              </select>
+            </div>
+          </div>
+          <div class="inp-group" style="margin-bottom:16px;">
+            <label class="inp-label">Logo Image URL (optional)</label>
+            <input id="m-logo" type="url" class="inp" placeholder="https://...">
+          </div>
+          <button onclick="saveMethod()" class="btn-gold"><i class="fas fa-save"></i> <span id="method-btn-txt">Save Method</span></button>
+        </div>
 
-        // --- USER MONITOR LOGIC ---
-        db.ref('users').on('value', snap => {
-            let html = '';
-            let count = 0;
-            snap.forEach(child => {
-                const user = child.val();
-                count++;
-                html += `
-                <div class="bg-white p-4 rounded-3xl shadow-sm border border-slate-100 flex justify-between items-center">
-                    <div>
-                        <p class="font-black text-slate-800 text-xs">${user.name}</p>
-                        <p class="text-[10px] text-slate-400 font-bold">${user.phone}</p>
-                        <p class="text-[9px] bg-amber-50 text-amber-600 px-2 rounded mt-1 inline-block font-black">${user.userId}</p>
-                    </div>
-                    <div class="text-right">
-                        <p class="font-black text-green-600 text-sm">৳${(user.balance || 0).toFixed(2)}</p>
-                        <button onclick="editBalance('${child.key}', ${user.balance || 0})" class="text-[8px] bg-slate-900 text-white px-2 py-1 rounded uppercase font-bold mt-1">Edit Balance</button>
-                    </div>
-                </div>`;
-            });
-            document.getElementById('user-list').innerHTML = html || "<p class='text-center py-10 opacity-30'>No users found</p>";
-            document.getElementById('user-count').innerText = count + " Users";
-        });
+        <div style="font-size:13px;font-weight:800;margin-bottom:10px;">All Methods (<span id="methods-count">0</span>)</div>
+        <div id="methods-list">
+          <div class="empty-box"><i class="fas fa-spinner fa-spin"></i><p>Loading...</p></div>
+        </div>
+      </div>
+    </div>
 
-        async function editBalance(phone, current) {
-            const newBal = prompt("Enter new balance for " + phone, current);
-            if(newBal !== null) {
-                await db.ref('users/' + phone).update({ balance: parseFloat(newBal) });
-                alert("Balance Updated!");
-            }
-        }
+  </div><!-- end scroll-area -->
 
-        // (বাকি সব ফাংশন যেমন: addNewPlan, deletePlan, approveDep, rejectReq, saveSettings আগের মতোই থাকবে)
-        // ... (আগের কোডের ফাংশনগুলো এখানে থাকবে) ...
+  <!-- BOTTOM NAV -->
+  <nav id="bottom-nav">
+    <button class="nav-btn active" onclick="navigate('dashboard')">
+      <i class="fas fa-th-large"></i><span>Dashboard</span>
+    </button>
+    <button class="nav-btn" onclick="navigate('users')">
+      <i class="fas fa-users"></i><span>Users</span>
+    </button>
+    <button class="nav-btn" onclick="navigate('deposits')" style="position:relative;">
+      <i class="fas fa-wallet"></i><span>Deposits</span>
+      <div class="nav-badge" id="dep-badge" style="display:none;">0</div>
+    </button>
+    <button class="nav-btn" onclick="navigate('withdrawals')" style="position:relative;">
+      <i class="fas fa-money-bill-wave"></i><span>Withdraw</span>
+      <div class="nav-badge" id="with-badge" style="display:none;">0</div>
+    </button>
+    <button class="nav-btn" onclick="navigate('plans')">
+      <i class="fas fa-server"></i><span>Plans</span>
+    </button>
+    <button class="nav-btn" onclick="navigate('methods')">
+      <i class="fas fa-credit-card"></i><span>Methods</span>
+    </button>
+  </nav>
 
-        // --- DEPOSIT MONITOR ---
-        db.ref('requests/deposits').on('value', snap => {
-            let html = '';
-            snap.forEach(item => {
-                const req = item.val();
-                if(req.status === 'Pending') {
-                    html += `
-                    <div class="bg-white p-5 rounded-3xl shadow-sm border-l-8 border-amber-500">
-                        <div class="flex justify-between items-center mb-2">
-                            <h4 class="font-black text-lg">৳${req.amount}</h4>
-                            <span class="text-[9px] font-black bg-slate-100 px-3 py-1 rounded-full uppercase">${req.method}</span>
-                        </div>
-                        <p class="text-[10px] font-bold text-slate-500">USER: ${req.phone}</p>
-                        <p class="text-[9px] bg-amber-50 p-2 rounded-xl font-mono text-amber-700 break-all my-3 italic">TXID: ${req.tx}</p>
-                        <div class="flex gap-2">
-                            <button onclick="approveDep('${item.key}', '${req.phone}', ${req.amount})" class="flex-1 bg-green-500 text-white py-3 rounded-xl text-[10px] font-black uppercase">Approve</button>
-                            <button onclick="rejectReq('deposits', '${item.key}')" class="flex-1 bg-rose-50 text-rose-500 py-3 rounded-xl text-[10px] font-black uppercase">Reject</button>
-                        </div>
-                    </div>`;
-                }
-            });
-            document.getElementById('deposit-list').innerHTML = html || "<p class='text-center py-10 opacity-30'>No Pending Deposits</p>";
-        });
+</div><!-- end app -->
 
-        async function approveDep(id, phone, amt) {
-            const userRef = db.ref('users/' + phone);
-            const userSnap = await userRef.once('value');
-            if(userSnap.exists()){
-                const currentBalance = userSnap.val().balance || 0;
-                await userRef.update({ balance: currentBalance + amt });
-                await db.ref('requests/deposits/' + id).update({ status: 'Success' });
-            }
-        }
+<!-- ══ MODALS ══ -->
 
-        db.ref('requests/withdraws').on('value', snap => {
-            let html = '';
-            snap.forEach(item => {
-                const req = item.val();
-                if(req.status === 'Pending') {
-                    html += `<div class="bg-white p-5 rounded-3xl shadow-sm border-l-8 border-rose-500">
-                        <div class="flex justify-between items-center mb-2"><h4 class="font-black text-rose-600">৳${req.amount}</h4><span class="text-[9px] font-black uppercase">Payout</span></div>
-                        <p class="text-[10px] font-bold text-slate-800 uppercase">Receiver: ${req.receiver}</p>
-                        <div class="flex gap-2 mt-4"><button onclick="rejectReq('withdraws', '${item.key}', 'Success')" class="flex-1 bg-slate-900 text-amber-500 py-3 rounded-xl text-[10px] font-black uppercase">Mark Paid</button><button onclick="rejectReq('withdraws', '${item.key}')" class="flex-1 bg-rose-50 text-rose-500 py-3 rounded-xl text-[10px] font-black uppercase">Reject</button></div>
-                    </div>`;
-                }
-            });
-            document.getElementById('withdraw-list').innerHTML = html || "<p class='text-center py-10 opacity-30'>No Payout Requests</p>";
-        });
+<!-- User Balance Edit Modal -->
+<div id="modal-balance" class="modal-overlay" style="display:none;">
+  <div class="modal-box">
+    <div class="modal-title"><i class="fas fa-coins"></i> Edit User Balance</div>
+    <div id="modal-user-info" style="font-size:12px;color:var(--text2);margin-bottom:14px;padding:10px;background:var(--bg3);border-radius:10px;font-family:'JetBrains Mono',monospace;"></div>
+    <input type="hidden" id="modal-phone">
+    <div class="inp-group">
+      <label class="inp-label">Action</label>
+      <select id="bal-action" class="inp">
+        <option value="set">Set Balance (replace)</option>
+        <option value="add">Add to Balance</option>
+        <option value="subtract">Subtract from Balance</option>
+      </select>
+    </div>
+    <div class="inp-group" style="margin-bottom:4px;">
+      <label class="inp-label">Amount ($)</label>
+      <input id="bal-amount" type="number" class="inp" placeholder="0.00">
+    </div>
+    <div class="modal-actions">
+      <button onclick="closeModal('modal-balance')" class="btn-outline-sm" style="flex:1;padding:13px;">Cancel</button>
+      <button onclick="applyBalanceEdit()" class="btn-gold" style="flex:1;">Apply</button>
+    </div>
+  </div>
+</div>
 
-        function rejectReq(path, id, status = 'Rejected') { db.ref('requests/' + path + '/' + id).update({ status: status }); }
+<!-- Confirm Delete -->
+<div id="modal-confirm" class="modal-overlay" style="display:none;">
+  <div class="modal-box" style="text-align:center;">
+    <div style="font-size:40px;margin-bottom:12px;">⚠️</div>
+    <div class="modal-title" style="justify-content:center;" id="modal-confirm-title">Confirm Action</div>
+    <p style="font-size:12px;color:var(--text2);margin-bottom:20px;" id="modal-confirm-text">Are you sure?</p>
+    <div class="modal-actions">
+      <button onclick="closeModal('modal-confirm')" class="btn-outline-sm" style="flex:1;padding:13px;">Cancel</button>
+      <button id="modal-confirm-btn" class="btn-sm btn-red" style="flex:1;padding:13px;border-radius:var(--radius-sm);">Confirm</button>
+    </div>
+  </div>
+</div>
 
-        async function addNewPlan() {
-            const title = document.getElementById('p-title').value;
-            const price = parseFloat(document.getElementById('p-price').value);
-            const daily = parseFloat(document.getElementById('p-daily').value);
-            const days = parseInt(document.getElementById('p-days').value);
-            if(title && price) {
-                await db.ref('appPlans').push({ id: Date.now(), title, price, daily, days, icon: '💎' });
-                alert("Plan Added!");
-            }
-        }
+<script>
+// ══════════════ FIREBASE ══════════════
+const firebaseConfig = {
+  apiKey: "AIzaSyDXD_ANF89k7StmGJ1Xz55nGUOB3ajMoF4",
+  authDomain: "smartinvestpro-c659f.firebaseapp.com",
+  databaseURL: "https://smartinvestpro-c659f-default-rtdb.firebaseio.com",
+  projectId: "smartinvestpro-c659f",
+  storageBucket: "smartinvestpro-c659f.firebasestorage.app",
+  messagingSenderId: "294616388438",
+  appId: "1:294616388438:web:54250014b8625fb50c3cf7"
+};
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
 
-        db.ref('appPlans').on('value', snap => {
-            let html = '';
-            snap.forEach(child => {
-                const p = child.val();
-                html += `<div class="bg-white p-4 rounded-2xl flex justify-between items-center shadow-sm border border-slate-100">
-                    <div><p class="font-black text-slate-800 text-xs">${p.title}</p><p class="text-[9px] text-slate-400">৳${p.price} - ৳${p.daily}/day</p></div>
-                    <button onclick="db.ref('appPlans/${child.key}').remove()" class="text-rose-500 p-2"><i class="fas fa-trash"></i></button>
-                </div>`;
-            });
-            document.getElementById('admin-plans-list').innerHTML = html;
-        });
+// ══ ADMIN CREDENTIALS (change these!) ══
+const ADMIN_USER = 'ssbos';
+const ADMIN_PASS = 'ssbos1122';
 
-        async function saveSettings() {
-            await db.ref('appSettings').update({
-                notice: document.getElementById('s-notice').value,
-                bkash: document.getElementById('s-bk').value,
-                nagad: document.getElementById('s-ng').value,
-                telegram: document.getElementById('s-tele').value,
-                whatsapp: document.getElementById('s-wa').value
-            });
-            alert("Settings Saved!");
-        }
+// ══ STATE ══
+let allUsers = {};
+let allDeposits = {};
+let allWithdrawals = {};
+let currentDepFilter = 'Pending';
+let currentWithFilter = 'Pending';
+let currentPage = 'dashboard';
 
-        db.ref('appSettings').once('value', snap => {
-            if(snap.exists()){
-                const d = snap.val();
-                document.getElementById('s-notice').value = d.notice || '';
-                document.getElementById('s-bk').value = d.bkash || '';
-                document.getElementById('s-ng').value = d.nagad || '';
-                document.getElementById('s-tele').value = d.telegram || '';
-                document.getElementById('s-wa').value = d.whatsapp || '';
-            }
-        });
-    </script>
+// ══════════════ AUTH ══════════════
+function adminLogin() {
+  const u = document.getElementById('l-user').value.trim();
+  const p = document.getElementById('l-pass').value.trim();
+  if (u === ADMIN_USER && p === ADMIN_PASS) {
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('app').style.display = 'flex';
+    initAdmin();
+  } else {
+    toast('Invalid credentials!', 'e');
+  }
+}
+function adminLogout() {
+  document.getElementById('app').style.display = 'none';
+  document.getElementById('login-screen').style.display = 'flex';
+  document.getElementById('l-pass').value = '';
+}
+document.addEventListener('keydown', e => { if (e.key === 'Enter') adminLogin(); });
+
+// ══════════════ INIT ══════════════
+function initAdmin() {
+  listenUsers();
+  listenDeposits();
+  listenWithdrawals();
+  listenSettings();
+}
+
+// ══════════════ LISTENERS ══════════════
+function listenUsers() {
+  db.ref('users').on('value', snap => {
+    allUsers = snap.val() || {};
+    renderDashboard();
+    renderUsers();
+  });
+}
+function listenDeposits() {
+  db.ref('requests/deposits').on('value', snap => {
+    allDeposits = snap.val() || {};
+    renderDashboard();
+    renderDeposits();
+    updateBadges();
+  });
+}
+function listenWithdrawals() {
+  db.ref('requests/withdraws').on('value', snap => {
+    allWithdrawals = snap.val() || {};
+    renderDashboard();
+    renderWithdrawals();
+    updateBadges();
+  });
+}
+function listenSettings() {
+  db.ref('appSettings').on('value', snap => {
+    const d = snap.val() || {};
+    document.getElementById('s-notice').value = d.notice || '';
+    document.getElementById('s-banner').value = d.bannerUrl || '';
+  });
+}
+
+// ══════════════ BADGE ══════════════
+function updateBadges() {
+  const depPending = Object.values(allDeposits).filter(d => d.status === 'Pending').length;
+  const withPending = Object.values(allWithdrawals).filter(w => w.status === 'Pending').length;
+  const db_el = document.getElementById('dep-badge');
+  const wb_el = document.getElementById('with-badge');
+  db_el.style.display = depPending ? 'flex' : 'none';
+  db_el.innerText = depPending;
+  wb_el.style.display = withPending ? 'flex' : 'none';
+  wb_el.innerText = withPending;
+}
+
+// ══════════════ DASHBOARD ══════════════
+function renderDashboard() {
+  const users = Object.values(allUsers);
+  const totalBal = users.reduce((a, u) => a + parseFloat(u.balance || 0), 0);
+  const totalInvested = users.reduce((a, u) => a + parseFloat(u.invested || 0), 0);
+  const totalPlans = users.reduce((a, u) => a + (u.myPlans ? u.myPlans.length : 0), 0);
+  const deps = Object.values(allDeposits);
+  const withs = Object.values(allWithdrawals);
+  const depPending = deps.filter(d => d.status === 'Pending').length;
+  const withPending = withs.filter(w => w.status === 'Pending').length;
+
+  document.getElementById('ds-users').innerText = users.length;
+  document.getElementById('hdr-users').innerText = users.length;
+  document.getElementById('ds-balance').innerText = '$' + totalBal.toFixed(2);
+  document.getElementById('ds-invested').innerText = '$' + totalInvested.toFixed(2);
+  document.getElementById('ds-pending').innerText = depPending + withPending;
+  document.getElementById('ds-dep-pending').innerText = depPending;
+  document.getElementById('ds-with-pending').innerText = withPending;
+  document.getElementById('ds-plans').innerText = totalPlans;
+}
+
+// ══════════════ USERS ══════════════
+function renderUsers(filter = '') {
+  const list = document.getElementById('users-list');
+  const entries = Object.entries(allUsers);
+  const f = filter.toLowerCase();
+  const filtered = f
+    ? entries.filter(([k, u]) =>
+        (u.name || '').toLowerCase().includes(f) ||
+        (u.phone || '').includes(f) ||
+        (u.userId || '').toLowerCase().includes(f)
+      )
+    : entries;
+
+  document.getElementById('users-count-sub').innerText = `${filtered.length} of ${entries.length} users`;
+
+  if (!filtered.length) {
+    list.innerHTML = `<div class="empty-box"><i class="fas fa-user-slash"></i><p>No users found</p></div>`;
+    return;
+  }
+
+  list.innerHTML = filtered.map(([phone, u]) => `
+    <div class="user-row">
+      <div class="user-avatar">👤</div>
+      <div class="user-info">
+        <div class="user-name">${u.name || 'Unknown'}</div>
+        <div class="user-phone">${phone}</div>
+        <div class="user-meta">
+          <span class="meta-chip meta-balance">$${parseFloat(u.balance||0).toFixed(2)}</span>
+          <span class="meta-chip meta-profit">+$${parseFloat(u.profit||0).toFixed(2)}</span>
+          <span class="meta-chip meta-invested">Inv $${parseFloat(u.invested||0).toFixed(2)}</span>
+        </div>
+      </div>
+      <div class="user-right">
+        <div class="user-id">${u.userId || '—'}</div>
+        <div class="user-actions">
+          <button class="btn-sm btn-gold-sm" onclick="openBalanceModal('${phone}', '${u.name}', ${u.balance||0})"><i class="fas fa-coins"></i> Balance</button>
+          <button class="btn-sm btn-red" onclick="confirmDelete('${phone}')"><i class="fas fa-trash"></i> Delete</button>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function filterUsers() {
+  renderUsers(document.getElementById('search-inp').value);
+}
+
+// ══════════════ BALANCE MODAL ══════════════
+function openBalanceModal(phone, name, bal) {
+  document.getElementById('modal-phone').value = phone;
+  document.getElementById('modal-user-info').innerText = `${name} (${phone})\nCurrent Balance: $${parseFloat(bal).toFixed(2)}`;
+  document.getElementById('bal-amount').value = '';
+  document.getElementById('modal-balance').style.display = 'flex';
+}
+async function applyBalanceEdit() {
+  const phone = document.getElementById('modal-phone').value;
+  const action = document.getElementById('bal-action').value;
+  const amount = parseFloat(document.getElementById('bal-amount').value);
+  if (isNaN(amount) || amount < 0) return toast('Enter valid amount!', 'e');
+  const u = allUsers[phone];
+  if (!u) return;
+  let newBal = parseFloat(u.balance || 0);
+  if (action === 'set') newBal = amount;
+  else if (action === 'add') newBal += amount;
+  else if (action === 'subtract') newBal = Math.max(0, newBal - amount);
+  await db.ref('users/' + phone).update({ balance: parseFloat(newBal.toFixed(2)) });
+  closeModal('modal-balance');
+  toast('Balance updated!', 's');
+}
+
+// ══════════════ DELETE USER ══════════════
+function confirmDelete(phone) {
+  document.getElementById('modal-confirm-title').innerText = 'Delete User';
+  document.getElementById('modal-confirm-text').innerText = `Delete user ${phone}? This cannot be undone.`;
+  document.getElementById('modal-confirm-btn').onclick = async () => {
+    await db.ref('users/' + phone).remove();
+    closeModal('modal-confirm');
+    toast('User deleted!', 's');
+  };
+  document.getElementById('modal-confirm').style.display = 'flex';
+}
+
+// ══════════════ DEPOSITS ══════════════
+function renderDeposits() {
+  const list = document.getElementById('deposits-list');
+  const entries = Object.entries(allDeposits);
+  const filtered = currentDepFilter === 'all'
+    ? entries
+    : entries.filter(([, d]) => d.status === currentDepFilter);
+
+  if (!filtered.length) {
+    list.innerHTML = `<div class="empty-box"><i class="fas fa-inbox"></i><p>No ${currentDepFilter === 'all' ? '' : currentDepFilter.toLowerCase()} requests</p></div>`;
+    return;
+  }
+
+  list.innerHTML = [...filtered].reverse().map(([key, d]) => `
+    <div class="req-row">
+      <div class="req-top">
+        <div class="req-info">
+          <div class="req-amount green">+$${parseFloat(d.amount||0).toFixed(2)}</div>
+          <div class="req-meta">${d.name || '—'} · ${d.phone || '—'}</div>
+        </div>
+        <span class="status-badge ${d.status==='Pending'?'s-pending':d.status==='Approved'?'s-approved':'s-rejected'}">${d.status}</span>
+      </div>
+      <div class="req-detail-row">
+        <span class="req-tag"><i class="fas fa-exchange-alt"></i> ${d.method || '—'}</span>
+        <span class="req-tag"><i class="fas fa-hashtag"></i> ${d.tx || '—'}</span>
+        <span class="req-tag"><i class="fas fa-clock"></i> ${d.date || '—'}</span>
+      </div>
+      ${d.status === 'Pending' ? `
+      <div class="req-actions">
+        <button class="btn-sm btn-green" onclick="approveDeposit('${key}', '${d.phone}', ${d.amount})"><i class="fas fa-check"></i> Approve</button>
+        <button class="btn-sm btn-red" onclick="rejectDeposit('${key}')"><i class="fas fa-times"></i> Reject</button>
+      </div>` : ''}
+    </div>
+  `).join('');
+}
+
+function filterDeposits(status, el) {
+  currentDepFilter = status;
+  document.querySelectorAll('#page-deposits .tab-pill').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  renderDeposits();
+}
+
+async function approveDeposit(key, phone, amount) {
+  const user = allUsers[phone];
+  if (!user) return toast('User not found!', 'e');
+  const newBal = parseFloat(((user.balance || 0) + parseFloat(amount)).toFixed(2));
+  await db.ref('users/' + phone).update({ balance: newBal });
+  await db.ref('requests/deposits/' + key).update({ status: 'Approved' });
+  toast(`Deposit of $${amount} approved!`, 's');
+}
+
+async function rejectDeposit(key) {
+  await db.ref('requests/deposits/' + key).update({ status: 'Rejected' });
+  toast('Deposit rejected.', 'i');
+}
+
+// ══════════════ WITHDRAWALS ══════════════
+function renderWithdrawals() {
+  const list = document.getElementById('withdrawals-list');
+  const entries = Object.entries(allWithdrawals);
+  const filtered = currentWithFilter === 'all'
+    ? entries
+    : entries.filter(([, w]) => w.status === currentWithFilter);
+
+  if (!filtered.length) {
+    list.innerHTML = `<div class="empty-box"><i class="fas fa-inbox"></i><p>No ${currentWithFilter === 'all' ? '' : currentWithFilter.toLowerCase()} requests</p></div>`;
+    return;
+  }
+
+  list.innerHTML = [...filtered].reverse().map(([key, w]) => `
+    <div class="req-row">
+      <div class="req-top">
+        <div class="req-info">
+          <div class="req-amount" style="color:var(--red);">-$${parseFloat(w.amount||0).toFixed(2)}</div>
+          <div class="req-meta">${w.name || '—'} · ${w.phone || '—'}</div>
+        </div>
+        <span class="status-badge ${w.status==='Pending'?'s-pending':w.status==='Approved'?'s-approved':'s-rejected'}">${w.status}</span>
+      </div>
+      <div class="req-detail-row">
+        <span class="req-tag"><i class="fas fa-exchange-alt"></i> ${w.method || '—'}</span>
+        <span class="req-tag"><i class="fas fa-wallet"></i> ${w.account || '—'}</span>
+        <span class="req-tag"><i class="fas fa-clock"></i> ${w.date || '—'}</span>
+      </div>
+      ${w.status === 'Pending' ? `
+      <div class="req-actions">
+        <button class="btn-sm btn-green" onclick="approveWithdraw('${key}', '${w.phone}')"><i class="fas fa-check"></i> Mark Done</button>
+        <button class="btn-sm btn-red" onclick="rejectWithdraw('${key}', '${w.phone}', ${w.amount})"><i class="fas fa-times"></i> Reject & Refund</button>
+      </div>` : ''}
+    </div>
+  `).join('');
+}
+
+function filterWithdrawals(status, el) {
+  currentWithFilter = status;
+  document.querySelectorAll('#page-withdrawals .tab-pill').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  renderWithdrawals();
+}
+
+async function approveWithdraw(key, phone) {
+  await db.ref('requests/withdraws/' + key).update({ status: 'Approved' });
+  // Update user withdraw history status
+  const user = allUsers[phone];
+  if (user && user.withdraws) {
+    const ws = user.withdraws.map(w => {
+      if (w.status === 'Pending') return { ...w, status: 'Done' };
+      return w;
+    });
+    await db.ref('users/' + phone).update({ withdraws: ws });
+  }
+  toast('Withdrawal approved!', 's');
+}
+
+async function rejectWithdraw(key, phone, amount) {
+  const user = allUsers[phone];
+  if (user) {
+    const refundedBal = parseFloat(((user.balance || 0) + parseFloat(amount)).toFixed(2));
+    await db.ref('users/' + phone).update({ balance: refundedBal });
+  }
+  await db.ref('requests/withdraws/' + key).update({ status: 'Rejected' });
+  toast('Rejected & refunded $' + amount, 'i');
+}
+
+// ══════════════ PLANS ══════════════
+function loadPlans() {
+  db.ref('appPlans').on('value', snap => {
+    const list = document.getElementById('plans-list');
+    const plans = snap.val() || {};
+    const entries = Object.entries(plans);
+    document.getElementById('plans-count').innerText = entries.length;
+
+    if (!entries.length) {
+      list.innerHTML = `<div class="empty-box"><i class="fas fa-server"></i><p>No plans yet. Add one above.</p></div>`;
+      return;
+    }
+
+    list.innerHTML = entries.map(([key, p]) => `
+      <div class="plan-admin-card">
+        <div class="plan-icon-wrap">
+          ${p.imageUrl ? `<img src="${p.imageUrl}" onerror="this.style.display='none'">` : p.icon || '💎'}
+        </div>
+        <div class="plan-admin-info">
+          <div class="plan-admin-name">${p.title}</div>
+          <div class="plan-admin-price">$${parseFloat(p.price).toFixed(2)}</div>
+          <div class="plan-admin-stats">
+            <span class="plan-stat-chip">$${parseFloat(p.daily).toFixed(2)}/day</span>
+            <span class="plan-stat-chip">${p.days} days</span>
+            <span class="plan-stat-chip">Total $${(parseFloat(p.daily)*parseInt(p.days)).toFixed(2)}</span>
+          </div>
+        </div>
+        <div class="plan-admin-right">
+          <button class="btn-sm btn-gold-sm" onclick="editPlan('${key}')"><i class="fas fa-pen"></i> Edit</button>
+          <button class="btn-sm btn-red" onclick="deletePlan('${key}')"><i class="fas fa-trash"></i></button>
+        </div>
+      </div>
+    `).join('');
+  });
+}
+
+async function savePlan() {
+  const key = document.getElementById('plan-edit-key').value;
+  const title = document.getElementById('p-title').value.trim();
+  const price = parseFloat(document.getElementById('p-price').value);
+  const daily = parseFloat(document.getElementById('p-daily').value);
+  const days = parseInt(document.getElementById('p-days').value);
+  const icon = document.getElementById('p-icon').value.trim() || '💎';
+  const imageUrl = document.getElementById('p-image').value.trim();
+  if (!title || isNaN(price) || isNaN(daily) || isNaN(days)) return toast('Fill all fields!', 'e');
+  const plan = { title, price, daily, days, icon, imageUrl };
+  if (key) { await db.ref('appPlans/' + key).update(plan); toast('Plan updated!', 's'); }
+  else { await db.ref('appPlans').push(plan); toast('Plan added!', 's'); }
+  clearPlanForm();
+}
+
+function editPlan(key) {
+  db.ref('appPlans/' + key).once('value', snap => {
+    const p = snap.val();
+    document.getElementById('plan-edit-key').value = key;
+    document.getElementById('p-title').value = p.title;
+    document.getElementById('p-price').value = p.price;
+    document.getElementById('p-daily').value = p.daily;
+    document.getElementById('p-days').value = p.days;
+    document.getElementById('p-icon').value = p.icon || '';
+    document.getElementById('p-image').value = p.imageUrl || '';
+    document.getElementById('plan-btn-txt').innerText = 'Update Plan';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    document.querySelector('.scroll-area').scrollTo({ top: 0, behavior: 'smooth' });
+  });
+}
+
+function deletePlan(key) {
+  document.getElementById('modal-confirm-title').innerText = 'Delete Plan';
+  document.getElementById('modal-confirm-text').innerText = 'Delete this mining plan? Existing user nodes are unaffected.';
+  document.getElementById('modal-confirm-btn').onclick = async () => {
+    await db.ref('appPlans/' + key).remove();
+    closeModal('modal-confirm');
+    toast('Plan deleted!', 's');
+  };
+  document.getElementById('modal-confirm').style.display = 'flex';
+}
+
+function clearPlanForm() {
+  document.getElementById('plan-edit-key').value = '';
+  document.getElementById('p-title').value = '';
+  document.getElementById('p-price').value = '';
+  document.getElementById('p-daily').value = '';
+  document.getElementById('p-days').value = '';
+  document.getElementById('p-icon').value = '';
+  document.getElementById('p-image').value = '';
+  document.getElementById('plan-btn-txt').innerText = 'Save Plan';
+}
+
+// ══════════════ METHODS ══════════════
+function loadMethods() {
+  db.ref('depositMethods').on('value', snap => {
+    const list = document.getElementById('methods-list');
+    const methods = snap.val() || {};
+    const entries = Object.entries(methods);
+    document.getElementById('methods-count').innerText = entries.length;
+
+    if (!entries.length) {
+      list.innerHTML = `<div class="empty-box"><i class="fas fa-credit-card"></i><p>No methods yet. Add one above.</p></div>`;
+      return;
+    }
+
+    list.innerHTML = entries.map(([key, m]) => `
+      <div class="method-admin-row">
+        <div class="method-logo">
+          ${m.logoUrl ? `<img src="${m.logoUrl}" onerror="this.style.display='none'">` : (m.icon || '💳')}
+        </div>
+        <div class="method-admin-info">
+          <div class="method-admin-name">${m.name}</div>
+          <div class="method-admin-num">${m.number || 'Not set'}</div>
+          <span class="method-status ${m.active ? 'm-active' : 'm-inactive'}">${m.active ? 'Active' : 'Inactive'}</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:6px;align-items:flex-end;">
+          <div style="font-size:9px;color:var(--text3);font-weight:700;">Min $${m.minDeposit || 2}</div>
+          <button class="btn-sm btn-gold-sm" onclick="editMethod('${key}')"><i class="fas fa-pen"></i> Edit</button>
+          <button class="btn-sm btn-red" onclick="deleteMethod('${key}')"><i class="fas fa-trash"></i></button>
+        </div>
+      </div>
+    `).join('');
+  });
+}
+
+async function saveMethod() {
+  const key = document.getElementById('method-edit-key').value;
+  const name = document.getElementById('m-name').value.trim();
+  const icon = document.getElementById('m-icon').value.trim() || '💳';
+  const number = document.getElementById('m-number').value.trim();
+  const minDeposit = parseFloat(document.getElementById('m-min').value) || 2;
+  const active = document.getElementById('m-active').value === 'true';
+  const logoUrl = document.getElementById('m-logo').value.trim();
+  if (!name || !number) return toast('Name and number are required!', 'e');
+  const method = { name, icon, number, minDeposit, active, logoUrl };
+  if (key) { await db.ref('depositMethods/' + key).update(method); toast('Method updated!', 's'); }
+  else { await db.ref('depositMethods').push(method); toast('Method added!', 's'); }
+  clearMethodForm();
+}
+
+function editMethod(key) {
+  db.ref('depositMethods/' + key).once('value', snap => {
+    const m = snap.val();
+    document.getElementById('method-edit-key').value = key;
+    document.getElementById('m-name').value = m.name || '';
+    document.getElementById('m-icon').value = m.icon || '';
+    document.getElementById('m-number').value = m.number || '';
+    document.getElementById('m-min').value = m.minDeposit || 2;
+    document.getElementById('m-active').value = m.active ? 'true' : 'false';
+    document.getElementById('m-logo').value = m.logoUrl || '';
+    document.getElementById('method-btn-txt').innerText = 'Update Method';
+    document.querySelector('.scroll-area').scrollTo({ top: 0, behavior: 'smooth' });
+  });
+}
+
+function deleteMethod(key) {
+  document.getElementById('modal-confirm-title').innerText = 'Delete Method';
+  document.getElementById('modal-confirm-text').innerText = 'Delete this payment method?';
+  document.getElementById('modal-confirm-btn').onclick = async () => {
+    await db.ref('depositMethods/' + key).remove();
+    closeModal('modal-confirm');
+    toast('Method deleted!', 's');
+  };
+  document.getElementById('modal-confirm').style.display = 'flex';
+}
+
+function clearMethodForm() {
+  document.getElementById('method-edit-key').value = '';
+  document.getElementById('m-name').value = '';
+  document.getElementById('m-icon').value = '';
+  document.getElementById('m-number').value = '';
+  document.getElementById('m-min').value = '';
+  document.getElementById('m-active').value = 'true';
+  document.getElementById('m-logo').value = '';
+  document.getElementById('method-btn-txt').innerText = 'Save Method';
+}
+
+// ══════════════ SETTINGS ══════════════
+async function saveSettings() {
+  const notice = document.getElementById('s-notice').value.trim();
+  const bannerUrl = document.getElementById('s-banner').value.trim();
+  await db.ref('appSettings').update({ notice, bannerUrl });
+  toast('Settings saved!', 's');
+}
+
+// ══════════════ NAVIGATE ══════════════
+function navigate(page) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + page).classList.add('active');
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  const navBtn = document.querySelector(`.nav-btn[onclick="navigate('${page}')"]`);
+  if (navBtn) navBtn.classList.add('active');
+  currentPage = page;
+  document.querySelector('.scroll-area').scrollTo({ top: 0 });
+  if (page === 'plans') loadPlans();
+  if (page === 'methods') loadMethods();
+}
+
+// ══════════════ MODAL ══════════════
+function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+document.querySelectorAll('.modal-overlay').forEach(m => {
+  m.addEventListener('click', e => { if (e.target === m) m.style.display = 'none'; });
+});
+
+// ══════════════ TOAST ══════════════
+function toast(msg, type = 'i') {
+  const t = document.getElementById('toast');
+  const icon = type === 's' ? 'check-circle' : type === 'e' ? 'times-circle' : 'info-circle';
+  t.className = `show ${type}`;
+  t.innerHTML = `<i class="fas fa-${icon}"></i> ${msg}`;
+  setTimeout(() => t.className = type, 2800);
+}
+
+// Inputs need user-select
+document.addEventListener('touchstart', e => {
+  if (['INPUT','SELECT','TEXTAREA'].includes(e.target.tagName)) e.stopPropagation();
+}, { passive: true });
+</script>
 </body>
 </html>
