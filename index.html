@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<title>​ ​❖ ⸢MEDIA MATRIX⸧ ❖ Admin </title>
+<title>Media Matrix❖ Admin Panel</title>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
 <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
@@ -13,7 +13,6 @@
   --gold: #F0B429;
   --gold-light: #FFD166;
   --gold-dark: #C88400;
-  --gold-glow: rgba(240,180,41,0.18);
   --bg: #0A0B0F;
   --bg2: #111318;
   --bg3: #181920;
@@ -47,7 +46,6 @@ html, body {
 ::-webkit-scrollbar-track { background:transparent; }
 ::-webkit-scrollbar-thumb { background:var(--bg5); border-radius:10px; }
 
-/* ── LAYOUT ── */
 #app { height:100vh; display:flex; flex-direction:column; overflow:hidden; }
 
 /* ── LOGIN ── */
@@ -60,7 +58,7 @@ html, body {
   width:76px; height:76px; border-radius:24px; margin:0 auto 16px;
   background:linear-gradient(135deg, var(--gold-light), var(--gold), var(--gold-dark));
   display:flex; align-items:center; justify-content:center; font-size:32px;
-  box-shadow:0 8px 40px rgba(240,180,41,0.4), 0 0 0 1px rgba(240,180,41,0.2);
+  box-shadow:0 8px 40px rgba(240,180,41,0.4);
   animation:popIn .6s cubic-bezier(.34,1.56,.64,1);
 }
 @keyframes popIn { from{transform:scale(0.3) rotate(-20deg);opacity:0;} to{transform:scale(1) rotate(0);opacity:1;} }
@@ -76,10 +74,10 @@ html, body {
   box-shadow:0 24px 80px rgba(0,0,0,0.6);
 }
 .admin-badge {
-  display:inline-flex; align-items:center; gap:6px; background:rgba(239,71,111,0.12);
-  border:1px solid rgba(239,71,111,0.25); border-radius:8px; padding:6px 14px;
-  font-size:10px; font-weight:800; color:var(--red); text-transform:uppercase; letter-spacing:1px;
-  margin:0 auto 20px; display:flex; justify-content:center; width:fit-content; margin:0 auto 20px;
+  display:flex; align-items:center; gap:6px; justify-content:center;
+  background:rgba(239,71,111,0.12); border:1px solid rgba(239,71,111,0.25);
+  border-radius:8px; padding:6px 14px; font-size:10px; font-weight:800;
+  color:var(--red); text-transform:uppercase; letter-spacing:1px; margin-bottom:20px;
 }
 
 /* ── HEADER ── */
@@ -93,22 +91,17 @@ html, body {
   width:36px; height:36px; border-radius:12px;
   background:linear-gradient(135deg, var(--gold-light), var(--gold));
   display:flex; align-items:center; justify-content:center; font-size:16px;
-  box-shadow:0 4px 16px rgba(240,180,41,0.3);
 }
-.header-brand-name { font-size:16px; font-weight:900; letter-spacing:-0.3px; }
+.header-brand-name { font-size:16px; font-weight:900; }
 .header-brand-name span { color:var(--gold); }
-.header-badge {
-  background:var(--red-bg); color:var(--red); font-size:8px; font-weight:800;
-  padding:3px 8px; border-radius:6px; text-transform:uppercase; letter-spacing:1px;
-}
-.header-right { display:flex; align-items:center; gap:8px; }
+.header-badge { background:var(--red-bg); color:var(--red); font-size:8px; font-weight:800; padding:3px 8px; border-radius:6px; text-transform:uppercase; letter-spacing:1px; }
 .logout-btn {
   background:var(--red-bg); border:1px solid rgba(239,71,111,0.2); border-radius:10px;
   color:var(--red); padding:8px 14px; font-family:'Outfit',sans-serif; font-size:11px; font-weight:700;
   cursor:pointer; text-transform:uppercase; letter-spacing:.6px; display:flex; align-items:center; gap:6px;
 }
 
-/* ── SCROLL AREA ── */
+/* ── SCROLL ── */
 .scroll-area {
   flex:1; overflow-y:auto; -webkit-overflow-scrolling:touch;
   padding-bottom:calc(var(--nav-h) + 16px);
@@ -119,10 +112,10 @@ html, body {
   position:fixed; bottom:0; left:0; right:0; height:var(--nav-h);
   background:rgba(13,14,20,0.98); border-top:1px solid var(--border);
   backdrop-filter:blur(30px); display:flex; align-items:center;
-  padding:0 4px 6px; z-index:500;
+  padding:0 4px 6px; z-index:500; overflow-x:auto;
 }
 .nav-btn {
-  flex:1; display:flex; flex-direction:column; align-items:center; gap:4px;
+  flex:1; min-width:52px; display:flex; flex-direction:column; align-items:center; gap:4px;
   padding:8px 4px; cursor:pointer; background:none; border:none; color:var(--text3);
   transition:all .2s; position:relative;
 }
@@ -131,7 +124,7 @@ html, body {
 .nav-btn.active { color:var(--gold); }
 .nav-btn.active i { filter:drop-shadow(0 0 8px rgba(240,180,41,.5)); transform:translateY(-1px); }
 .nav-badge {
-  position:absolute; top:4px; right:14px; min-width:16px; height:16px;
+  position:absolute; top:4px; right:10px; min-width:16px; height:16px;
   background:var(--red); color:#fff; border-radius:8px; font-size:8px; font-weight:900;
   display:flex; align-items:center; justify-content:center; padding:0 4px;
 }
@@ -143,21 +136,15 @@ html, body {
 
 /* ── SHARED ── */
 .page-pad { padding:16px; }
-.section-title {
-  font-size:18px; font-weight:900; margin-bottom:4px; display:flex; align-items:center; gap:8px;
-}
+.section-title { font-size:18px; font-weight:900; margin-bottom:4px; display:flex; align-items:center; gap:8px; }
 .section-sub { font-size:11px; color:var(--text2); margin-bottom:16px; }
 
-/* STAT CARDS */
 .stats-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:16px; }
 .stat-card {
   background:var(--bg3); border:1px solid var(--border); border-radius:var(--radius-sm);
   padding:14px; position:relative; overflow:hidden;
 }
-.stat-card-glow {
-  position:absolute; top:-20px; right:-20px; width:80px; height:80px;
-  border-radius:50%; pointer-events:none;
-}
+.stat-card-glow { position:absolute; top:-20px; right:-20px; width:80px; height:80px; border-radius:50%; pointer-events:none; }
 .stat-label { font-size:8px; font-weight:700; text-transform:uppercase; letter-spacing:1.4px; color:var(--text3); margin-bottom:6px; }
 .stat-value { font-size:22px; font-weight:900; }
 .stat-value.gold { color:var(--gold); }
@@ -166,15 +153,10 @@ html, body {
 .stat-value.blue { color:var(--blue); }
 .stat-sub { font-size:9px; color:var(--text3); margin-top:4px; font-weight:600; }
 
-/* CARDS */
-.card {
-  background:var(--bg3); border:1px solid var(--border);
-  border-radius:var(--radius); padding:16px; margin-bottom:12px;
-}
+.card { background:var(--bg3); border:1px solid var(--border); border-radius:var(--radius); padding:16px; margin-bottom:12px; }
 .card-title { font-size:14px; font-weight:800; margin-bottom:14px; display:flex; align-items:center; gap:8px; }
 .card-title i { color:var(--gold); font-size:13px; }
 
-/* INPUTS */
 .inp-group { margin-bottom:12px; }
 .inp-label { font-size:9px; font-weight:700; color:var(--text3); text-transform:uppercase; letter-spacing:1.2px; margin-bottom:6px; display:block; }
 .inp {
@@ -188,7 +170,6 @@ html, body {
 select.inp { cursor:pointer; }
 select.inp option { background:var(--bg4); }
 
-/* BUTTONS */
 .btn-gold {
   width:100%; padding:14px; border:none; border-radius:var(--radius-sm);
   background:linear-gradient(135deg, var(--gold-light), var(--gold), var(--gold-dark));
@@ -199,7 +180,7 @@ select.inp option { background:var(--bg4); }
 }
 .btn-gold:active { transform:scale(.97); }
 .btn-sm {
-  padding:8px 16px; border:none; border-radius:8px; font-family:'Outfit',sans-serif;
+  padding:8px 14px; border:none; border-radius:8px; font-family:'Outfit',sans-serif;
   font-size:10px; font-weight:800; cursor:pointer; letter-spacing:.5px; text-transform:uppercase;
   transition:all .15s; display:inline-flex; align-items:center; gap:5px;
 }
@@ -208,6 +189,7 @@ select.inp option { background:var(--bg4); }
 .btn-red { background:var(--red-bg); color:var(--red); border:1px solid rgba(239,71,111,0.25); }
 .btn-blue { background:var(--blue-bg); color:var(--blue); border:1px solid rgba(76,201,240,0.25); }
 .btn-gold-sm { background:rgba(240,180,41,0.12); color:var(--gold); border:1px solid rgba(240,180,41,0.25); }
+.btn-purple-sm { background:var(--purple-bg); color:var(--purple); border:1px solid rgba(155,93,229,0.25); }
 .btn-outline-sm {
   padding:8px 16px; border:1.5px solid var(--border2); border-radius:8px;
   background:transparent; color:var(--text2); font-family:'Outfit',sans-serif;
@@ -216,7 +198,6 @@ select.inp option { background:var(--bg4); }
 }
 .btn-outline-sm:active { background:var(--bg4); }
 
-/* TABS */
 .tab-row { display:flex; gap:6px; padding:0 16px 12px; overflow-x:auto; }
 .tab-pill {
   flex-shrink:0; padding:8px 16px; border-radius:100px; border:1.5px solid var(--border);
@@ -238,12 +219,9 @@ select.inp option { background:var(--bg4); }
 }
 .user-info { flex:1; min-width:0; }
 .user-name { font-size:14px; font-weight:800; margin-bottom:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-.user-phone { font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--text3); font-weight:500; margin-bottom:4px; }
-.user-meta { display:flex; gap:8px; flex-wrap:wrap; }
-.meta-chip {
-  font-size:9px; font-weight:700; padding:3px 8px; border-radius:6px;
-  text-transform:uppercase; letter-spacing:.5px;
-}
+.user-phone { font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--text3); margin-bottom:4px; }
+.user-meta { display:flex; gap:6px; flex-wrap:wrap; }
+.meta-chip { font-size:9px; font-weight:700; padding:3px 8px; border-radius:6px; text-transform:uppercase; letter-spacing:.5px; }
 .meta-balance { background:rgba(240,180,41,0.12); color:var(--gold); }
 .meta-profit { background:var(--green-bg); color:var(--green); }
 .meta-invested { background:var(--blue-bg); color:var(--blue); }
@@ -257,19 +235,13 @@ select.inp option { background:var(--bg4); }
   padding:14px; margin-bottom:8px;
 }
 .req-top { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:10px; }
-.req-info {}
-.req-amount { font-size:18px; font-weight:900; color:var(--text); }
-.req-amount.green { color:var(--green); }
-.req-amount.gold { color:var(--gold); }
+.req-amount { font-size:18px; font-weight:900; }
 .req-meta { font-size:10px; color:var(--text3); margin-top:3px; }
-.status-badge {
-  font-size:8px; font-weight:800; padding:5px 10px; border-radius:7px;
-  text-transform:uppercase; letter-spacing:.7px; white-space:nowrap;
-}
+.status-badge { font-size:8px; font-weight:800; padding:5px 10px; border-radius:7px; text-transform:uppercase; letter-spacing:.7px; white-space:nowrap; }
 .s-pending { background:rgba(240,180,41,0.12); color:var(--gold); }
 .s-approved { background:var(--green-bg); color:var(--green); }
 .s-rejected { background:var(--red-bg); color:var(--red); }
-.req-actions { display:flex; gap:6px; margin-top:10px; }
+.req-actions { display:flex; gap:6px; margin-top:10px; flex-wrap:wrap; }
 .req-detail-row { display:flex; gap:6px; margin-top:6px; flex-wrap:wrap; }
 .req-tag {
   display:flex; align-items:center; gap:4px; background:var(--bg4);
@@ -278,7 +250,25 @@ select.inp option { background:var(--bg4); }
 }
 .req-tag i { font-size:9px; color:var(--gold); }
 
-/* PLAN CARD */
+/* Copy Account Row */
+.account-copy-row {
+  display:flex; align-items:center; gap:8px; background:var(--bg4);
+  border:1px solid var(--border); border-radius:10px; padding:8px 12px; margin-top:8px;
+}
+.account-copy-val {
+  flex:1; font-family:'JetBrains Mono',monospace; font-size:12px;
+  font-weight:700; color:var(--blue); min-width:0; overflow:hidden;
+  text-overflow:ellipsis; white-space:nowrap;
+}
+.copy-small-btn {
+  background:var(--blue-bg); color:var(--blue); border:1px solid rgba(76,201,240,0.25);
+  border-radius:7px; padding:5px 10px; font-family:'Outfit',sans-serif;
+  font-size:9px; font-weight:800; cursor:pointer; text-transform:uppercase;
+  white-space:nowrap; transition:all .15s; flex-shrink:0;
+}
+.copy-small-btn:active { transform:scale(.95); }
+
+/* PLAN */
 .plan-admin-card {
   background:var(--bg3); border:1px solid var(--border); border-radius:16px;
   padding:14px; margin-bottom:8px; display:flex; gap:12px; align-items:center;
@@ -296,7 +286,7 @@ select.inp option { background:var(--bg4); }
 .plan-stat-chip { font-size:9px; font-weight:700; color:var(--text3); background:var(--bg4); padding:3px 8px; border-radius:6px; }
 .plan-admin-right { display:flex; flex-direction:column; gap:6px; align-items:flex-end; }
 
-/* METHOD CARD */
+/* METHOD */
 .method-admin-row {
   background:var(--bg3); border:1px solid var(--border); border-radius:14px;
   padding:14px; margin-bottom:8px; display:flex; gap:12px; align-items:center;
@@ -313,27 +303,12 @@ select.inp option { background:var(--bg4); }
 .m-active { background:var(--green-bg); color:var(--green); }
 .m-inactive { background:var(--red-bg); color:var(--red); }
 
-/* EMPTY */
 .empty-box { text-align:center; padding:48px 20px; color:var(--text3); }
 .empty-box i { font-size:40px; display:block; margin-bottom:12px; opacity:.3; }
 .empty-box p { font-size:12px; }
-
-/* DIVIDER */
 .divider { height:1px; background:var(--border); margin:12px 0; }
 
-/* TOAST */
-#toast {
-  position:fixed; top:18px; left:50%; transform:translateX(-50%) translateY(-90px);
-  background:var(--bg2); border:1px solid var(--border2); border-radius:14px;
-  padding:12px 20px; z-index:99999; font-size:12px; font-weight:700;
-  display:flex; align-items:center; gap:8px; transition:transform .35s cubic-bezier(.34,1.56,.64,1);
-  max-width:290px; width:90vw; justify-content:center;
-  box-shadow:0 8px 40px rgba(0,0,0,0.6); font-family:'Outfit',sans-serif;
-}
-#toast.show { transform:translateX(-50%) translateY(0); }
-#toast.s { border-color:rgba(6,214,160,0.4); color:var(--green); }
-#toast.e { border-color:rgba(239,71,111,0.4); color:var(--red); }
-#toast.i { border-color:rgba(240,180,41,0.4); color:var(--gold); }
+.user-search { padding:0 16px 12px; }
 
 /* MODAL */
 .modal-overlay {
@@ -350,21 +325,27 @@ select.inp option { background:var(--bg4); }
 .modal-actions { display:flex; gap:8px; margin-top:16px; }
 .modal-actions button { flex:1; }
 
-/* SCROLLABLE TABS SECTION */
-.user-search { padding:0 16px 12px; }
-.user-search .inp { padding:11px 14px; font-size:13px; }
-
-/* BALANCE EDIT */
-.balance-edit-row { display:flex; gap:8px; align-items:center; }
-.balance-edit-row .inp { flex:1; margin-bottom:0; }
+/* TOAST */
+#toast {
+  position:fixed; top:18px; left:50%; transform:translateX(-50%) translateY(-90px);
+  background:var(--bg2); border:1px solid var(--border2); border-radius:14px;
+  padding:12px 20px; z-index:99999; font-size:12px; font-weight:700;
+  display:flex; align-items:center; gap:8px;
+  transition:transform .35s cubic-bezier(.34,1.56,.64,1);
+  max-width:290px; width:90vw; justify-content:center;
+  box-shadow:0 8px 40px rgba(0,0,0,0.6); font-family:'Outfit',sans-serif;
+}
+#toast.show { transform:translateX(-50%) translateY(0); }
+#toast.s { border-color:rgba(6,214,160,0.4); color:var(--green); }
+#toast.e { border-color:rgba(239,71,111,0.4); color:var(--red); }
+#toast.i { border-color:rgba(240,180,41,0.4); color:var(--gold); }
 </style>
 </head>
 <body>
 
-<!-- TOAST -->
 <div id="toast"></div>
 
-<!-- ══════════════ LOGIN ══════════════ -->
+<!-- ══ LOGIN ══ -->
 <div id="login-screen">
   <div class="login-logo">🛡️</div>
   <div class="login-title">ADMIN PANEL</div>
@@ -385,10 +366,9 @@ select.inp option { background:var(--bg4); }
   </div>
 </div>
 
-<!-- ══════════════ MAIN APP ══════════════ -->
+<!-- ══ MAIN APP ══ -->
 <div id="app" style="display:none;">
 
-  <!-- HEADER -->
   <div id="header">
     <div class="header-row">
       <div class="header-brand">
@@ -398,8 +378,8 @@ select.inp option { background:var(--bg4); }
           <div class="header-badge">Control Panel</div>
         </div>
       </div>
-      <div class="header-right">
-        <div style="text-align:right;margin-right:10px;">
+      <div style="display:flex;align-items:center;gap:10px;">
+        <div style="text-align:right;">
           <div style="font-size:8px;color:var(--text3);font-weight:700;text-transform:uppercase;letter-spacing:1px;">Total Users</div>
           <div style="font-size:16px;font-weight:900;color:var(--gold);" id="hdr-users">0</div>
         </div>
@@ -408,7 +388,6 @@ select.inp option { background:var(--bg4); }
     </div>
   </div>
 
-  <!-- SCROLL -->
   <div class="scroll-area">
 
     <!-- ══ DASHBOARD ══ -->
@@ -443,21 +422,22 @@ select.inp option { background:var(--bg4); }
           </div>
         </div>
 
-        <!-- Quick stats row -->
         <div class="card">
           <div class="card-title"><i class="fas fa-fire"></i> Today's Activity</div>
-          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;">
-            <div style="text-align:center;">
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;text-align:center;">
+            <div>
               <div style="font-size:20px;font-weight:900;color:var(--gold);" id="ds-dep-pending">0</div>
               <div style="font-size:8px;color:var(--text3);font-weight:700;text-transform:uppercase;margin-top:3px;">Dep Pending</div>
             </div>
-            <div style="text-align:center;">
+            <div>
               <div style="font-size:20px;font-weight:900;color:var(--red);" id="ds-with-pending">0</div>
               <div style="font-size:8px;color:var(--text3);font-weight:700;text-transform:uppercase;margin-top:3px;">With Pending</div>
             </div>
-            <div style="font-size:20px;font-weight:900;color:var(--green);text-align:center;" id="ds-plans">0</div>
+            <div>
+              <div style="font-size:20px;font-weight:900;color:var(--green);" id="ds-plans">0</div>
+              <div style="font-size:8px;color:var(--text3);font-weight:700;text-transform:uppercase;margin-top:3px;">Active Nodes</div>
+            </div>
           </div>
-          <div style="text-align:center;font-size:8px;color:var(--text3);font-weight:700;text-transform:uppercase;margin-top:-14px;padding-left:66.6%;">Active Nodes</div>
         </div>
 
         <!-- App Settings -->
@@ -465,13 +445,34 @@ select.inp option { background:var(--bg4); }
           <div class="card-title"><i class="fas fa-megaphone"></i> App Settings</div>
           <div class="inp-group">
             <label class="inp-label">Notice / Announcement</label>
-            <textarea id="s-notice" class="inp" rows="3" placeholder="Platform announcement shown on login..." style="resize:none;line-height:1.6;"></textarea>
+            <textarea id="s-notice" class="inp" rows="3" placeholder="Platform announcement..." style="resize:none;line-height:1.6;"></textarea>
           </div>
           <div class="inp-group" style="margin-bottom:16px;">
             <label class="inp-label">Banner Image URL</label>
             <input id="s-banner" type="url" class="inp" placeholder="https://... banner image link">
           </div>
           <button onclick="saveSettings()" class="btn-gold"><i class="fas fa-save"></i> Save Settings</button>
+        </div>
+
+        <!-- ── Admin Credential Change ── -->
+        <div class="card">
+          <div class="card-title"><i class="fas fa-key"></i> Change Admin Credentials</div>
+          <div class="inp-group">
+            <label class="inp-label">New Username</label>
+            <input id="new-admin-user" type="text" class="inp" placeholder="New admin username">
+          </div>
+          <div class="inp-group">
+            <label class="inp-label">New Password</label>
+            <input id="new-admin-pass" type="password" class="inp" placeholder="New password">
+          </div>
+          <div class="inp-group" style="margin-bottom:16px;">
+            <label class="inp-label">Confirm New Password</label>
+            <input id="new-admin-pass2" type="password" class="inp" placeholder="Repeat new password">
+          </div>
+          <button onclick="changeAdminCredentials()" class="btn-gold" style="background:linear-gradient(135deg,#9B5DE5,#7B3DBF);">
+            <i class="fas fa-shield-alt"></i> Update Credentials
+          </button>
+          <div id="cred-hint" style="font-size:10px;color:var(--text3);margin-top:10px;text-align:center;line-height:1.6;"></div>
         </div>
       </div>
     </div>
@@ -483,7 +484,7 @@ select.inp option { background:var(--bg4); }
         <div class="section-sub" id="users-count-sub">Loading...</div>
       </div>
       <div class="user-search">
-        <input class="inp" type="text" id="search-inp" placeholder="🔍  Search by name, phone, ID..." oninput="filterUsers()" style="font-size:13px;">
+        <input class="inp" type="text" id="search-inp" placeholder="🔍  Search by name, phone, ID..." oninput="filterUsers()">
       </div>
       <div id="users-list" style="padding:0 16px;">
         <div class="empty-box"><i class="fas fa-spinner fa-spin"></i><p>Loading users...</p></div>
@@ -529,8 +530,6 @@ select.inp option { background:var(--bg4); }
       <div class="page-pad">
         <div class="section-title"><i class="fas fa-server" style="color:var(--gold);font-size:16px;"></i> Mining Plans</div>
         <div class="section-sub">Manage available mining node plans</div>
-
-        <!-- Add plan card -->
         <div class="card">
           <div class="card-title"><i class="fas fa-plus-circle"></i> Add / Edit Plan</div>
           <input type="hidden" id="plan-edit-key">
@@ -564,7 +563,6 @@ select.inp option { background:var(--bg4); }
           </div>
           <button onclick="savePlan()" class="btn-gold"><i class="fas fa-save"></i> <span id="plan-btn-txt">Save Plan</span></button>
         </div>
-
         <div style="font-size:13px;font-weight:800;margin-bottom:10px;">All Plans (<span id="plans-count">0</span>)</div>
         <div id="plans-list">
           <div class="empty-box"><i class="fas fa-spinner fa-spin"></i><p>Loading...</p></div>
@@ -572,14 +570,13 @@ select.inp option { background:var(--bg4); }
       </div>
     </div>
 
-    <!-- ══ METHODS ══ -->
+    <!-- ══ DEPOSIT METHODS ══ -->
     <div id="page-methods" class="page">
       <div class="page-pad">
-        <div class="section-title"><i class="fas fa-credit-card" style="color:var(--gold);font-size:16px;"></i> Payment Methods</div>
-        <div class="section-sub">Manage deposit methods shown to users</div>
-
+        <div class="section-title"><i class="fas fa-credit-card" style="color:var(--gold);font-size:16px;"></i> Deposit Methods</div>
+        <div class="section-sub">Manage deposit payment methods for users</div>
         <div class="card">
-          <div class="card-title"><i class="fas fa-plus-circle"></i> Add / Edit Method</div>
+          <div class="card-title"><i class="fas fa-plus-circle"></i> Add / Edit Deposit Method</div>
           <input type="hidden" id="method-edit-key">
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
             <div class="inp-group">
@@ -614,9 +611,50 @@ select.inp option { background:var(--bg4); }
           </div>
           <button onclick="saveMethod()" class="btn-gold"><i class="fas fa-save"></i> <span id="method-btn-txt">Save Method</span></button>
         </div>
-
-        <div style="font-size:13px;font-weight:800;margin-bottom:10px;">All Methods (<span id="methods-count">0</span>)</div>
+        <div style="font-size:13px;font-weight:800;margin-bottom:10px;">All Deposit Methods (<span id="methods-count">0</span>)</div>
         <div id="methods-list">
+          <div class="empty-box"><i class="fas fa-spinner fa-spin"></i><p>Loading...</p></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ WITHDRAW METHODS ══ -->
+    <div id="page-wmethods" class="page">
+      <div class="page-pad">
+        <div class="section-title"><i class="fas fa-money-bill-transfer" style="color:var(--gold);font-size:16px;"></i> Withdrawal Methods</div>
+        <div class="section-sub">Manage withdrawal methods shown to users</div>
+        <div class="card">
+          <div class="card-title"><i class="fas fa-plus-circle"></i> Add / Edit Withdrawal Method</div>
+          <input type="hidden" id="wm-edit-key">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+            <div class="inp-group">
+              <label class="inp-label">Method Name</label>
+              <input id="wm-name" type="text" class="inp" placeholder="bKash">
+            </div>
+            <div class="inp-group">
+              <label class="inp-label">Icon (emoji)</label>
+              <input id="wm-icon" type="text" class="inp" placeholder="💸">
+            </div>
+          </div>
+          <div class="inp-group">
+            <label class="inp-label">Min Withdrawal Amount ($)</label>
+            <input id="wm-min" type="number" class="inp" placeholder="6">
+          </div>
+          <div class="inp-group">
+            <label class="inp-label">Status</label>
+            <select id="wm-active" class="inp">
+              <option value="true">Active ✅</option>
+              <option value="false">Inactive ❌</option>
+            </select>
+          </div>
+          <div class="inp-group" style="margin-bottom:16px;">
+            <label class="inp-label">Logo Image URL (optional)</label>
+            <input id="wm-logo" type="url" class="inp" placeholder="https://...">
+          </div>
+          <button onclick="saveWithdrawMethod()" class="btn-gold"><i class="fas fa-save"></i> <span id="wm-btn-txt">Save Method</span></button>
+        </div>
+        <div style="font-size:13px;font-weight:800;margin-bottom:10px;">All Withdrawal Methods (<span id="wmethods-count">0</span>)</div>
+        <div id="wmethods-list">
           <div class="empty-box"><i class="fas fa-spinner fa-spin"></i><p>Loading...</p></div>
         </div>
       </div>
@@ -627,13 +665,13 @@ select.inp option { background:var(--bg4); }
   <!-- BOTTOM NAV -->
   <nav id="bottom-nav">
     <button class="nav-btn active" onclick="navigate('dashboard')">
-      <i class="fas fa-th-large"></i><span>Dashboard</span>
+      <i class="fas fa-th-large"></i><span>Dash</span>
     </button>
     <button class="nav-btn" onclick="navigate('users')">
       <i class="fas fa-users"></i><span>Users</span>
     </button>
     <button class="nav-btn" onclick="navigate('deposits')" style="position:relative;">
-      <i class="fas fa-wallet"></i><span>Deposits</span>
+      <i class="fas fa-wallet"></i><span>Deposit</span>
       <div class="nav-badge" id="dep-badge" style="display:none;">0</div>
     </button>
     <button class="nav-btn" onclick="navigate('withdrawals')" style="position:relative;">
@@ -644,7 +682,10 @@ select.inp option { background:var(--bg4); }
       <i class="fas fa-server"></i><span>Plans</span>
     </button>
     <button class="nav-btn" onclick="navigate('methods')">
-      <i class="fas fa-credit-card"></i><span>Methods</span>
+      <i class="fas fa-arrow-down"></i><span>Dep.Met</span>
+    </button>
+    <button class="nav-btn" onclick="navigate('wmethods')">
+      <i class="fas fa-arrow-up"></i><span>With.Met</span>
     </button>
   </nav>
 
@@ -652,11 +693,11 @@ select.inp option { background:var(--bg4); }
 
 <!-- ══ MODALS ══ -->
 
-<!-- User Balance Edit Modal -->
+<!-- Balance Edit Modal -->
 <div id="modal-balance" class="modal-overlay" style="display:none;">
   <div class="modal-box">
     <div class="modal-title"><i class="fas fa-coins"></i> Edit User Balance</div>
-    <div id="modal-user-info" style="font-size:12px;color:var(--text2);margin-bottom:14px;padding:10px;background:var(--bg3);border-radius:10px;font-family:'JetBrains Mono',monospace;"></div>
+    <div id="modal-user-info" style="font-size:12px;color:var(--text2);margin-bottom:14px;padding:10px;background:var(--bg3);border-radius:10px;font-family:'JetBrains Mono',monospace;white-space:pre-line;"></div>
     <input type="hidden" id="modal-phone">
     <div class="inp-group">
       <label class="inp-label">Action</label>
@@ -691,7 +732,7 @@ select.inp option { background:var(--bg4); }
 </div>
 
 <script>
-// ══════════════ FIREBASE ══════════════
+// ══ FIREBASE ══
 const firebaseConfig = {
   apiKey: "AIzaSyDXD_ANF89k7StmGJ1Xz55nGUOB3ajMoF4",
   authDomain: "smartinvestpro-c659f.firebaseapp.com",
@@ -704,22 +745,30 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 
-// ══ ADMIN CREDENTIALS (change these!) ══
-const ADMIN_USER = 'ssbos';
-const ADMIN_PASS = 'ssbos1122';
+// ══ DEFAULT ADMIN CREDENTIALS ══
+// Stored in Firebase under adminCredentials node for dynamic change
+let ADMIN_USER = 'ssbos';
+let ADMIN_PASS = 'ssbos1122';
 
 // ══ STATE ══
-let allUsers = {};
-let allDeposits = {};
-let allWithdrawals = {};
-let currentDepFilter = 'Pending';
-let currentWithFilter = 'Pending';
-let currentPage = 'dashboard';
+let allUsers = {}, allDeposits = {}, allWithdrawals = {};
+let currentDepFilter = 'Pending', currentWithFilter = 'Pending';
 
-// ══════════════ AUTH ══════════════
-function adminLogin() {
+// ══ LOAD ADMIN CREDENTIALS FROM FIREBASE ══
+async function loadAdminCredentials() {
+  const snap = await db.ref('adminCredentials').once('value');
+  if (snap.exists()) {
+    const d = snap.val();
+    if (d.username) ADMIN_USER = d.username;
+    if (d.password) ADMIN_PASS = d.password;
+  }
+}
+
+// ══ AUTH ══
+async function adminLogin() {
   const u = document.getElementById('l-user').value.trim();
   const p = document.getElementById('l-pass').value.trim();
+  await loadAdminCredentials();
   if (u === ADMIN_USER && p === ADMIN_PASS) {
     document.getElementById('login-screen').style.display = 'none';
     document.getElementById('app').style.display = 'flex';
@@ -735,7 +784,29 @@ function adminLogout() {
 }
 document.addEventListener('keydown', e => { if (e.key === 'Enter') adminLogin(); });
 
-// ══════════════ INIT ══════════════
+// ══ CHANGE ADMIN CREDENTIALS ══
+async function changeAdminCredentials() {
+  const newUser = document.getElementById('new-admin-user').value.trim();
+  const newPass = document.getElementById('new-admin-pass').value.trim();
+  const newPass2 = document.getElementById('new-admin-pass2').value.trim();
+  const hint = document.getElementById('cred-hint');
+
+  if (!newUser || newUser.length < 3) return toast('Username must be at least 3 characters!', 'e');
+  if (!newPass || newPass.length < 6) return toast('Password must be at least 6 characters!', 'e');
+  if (newPass !== newPass2) return toast('Passwords do not match!', 'e');
+
+  await db.ref('adminCredentials').set({ username: newUser, password: newPass });
+  ADMIN_USER = newUser;
+  ADMIN_PASS = newPass;
+
+  document.getElementById('new-admin-user').value = '';
+  document.getElementById('new-admin-pass').value = '';
+  document.getElementById('new-admin-pass2').value = '';
+  hint.innerText = `✅ Credentials updated! New username: ${newUser}`;
+  toast('Admin credentials updated!', 's');
+}
+
+// ══ INIT ══
 function initAdmin() {
   listenUsers();
   listenDeposits();
@@ -743,29 +814,14 @@ function initAdmin() {
   listenSettings();
 }
 
-// ══════════════ LISTENERS ══════════════
 function listenUsers() {
-  db.ref('users').on('value', snap => {
-    allUsers = snap.val() || {};
-    renderDashboard();
-    renderUsers();
-  });
+  db.ref('users').on('value', snap => { allUsers = snap.val() || {}; renderDashboard(); renderUsers(); });
 }
 function listenDeposits() {
-  db.ref('requests/deposits').on('value', snap => {
-    allDeposits = snap.val() || {};
-    renderDashboard();
-    renderDeposits();
-    updateBadges();
-  });
+  db.ref('requests/deposits').on('value', snap => { allDeposits = snap.val() || {}; renderDashboard(); renderDeposits(); updateBadges(); });
 }
 function listenWithdrawals() {
-  db.ref('requests/withdraws').on('value', snap => {
-    allWithdrawals = snap.val() || {};
-    renderDashboard();
-    renderWithdrawals();
-    updateBadges();
-  });
+  db.ref('requests/withdraws').on('value', snap => { allWithdrawals = snap.val() || {}; renderDashboard(); renderWithdrawals(); updateBadges(); });
 }
 function listenSettings() {
   db.ref('appSettings').on('value', snap => {
@@ -775,64 +831,53 @@ function listenSettings() {
   });
 }
 
-// ══════════════ BADGE ══════════════
+// ══ BADGES ══
 function updateBadges() {
-  const depPending = Object.values(allDeposits).filter(d => d.status === 'Pending').length;
-  const withPending = Object.values(allWithdrawals).filter(w => w.status === 'Pending').length;
+  const depP = Object.values(allDeposits).filter(d => d.status === 'Pending').length;
+  const withP = Object.values(allWithdrawals).filter(w => w.status === 'Pending').length;
   const db_el = document.getElementById('dep-badge');
   const wb_el = document.getElementById('with-badge');
-  db_el.style.display = depPending ? 'flex' : 'none';
-  db_el.innerText = depPending;
-  wb_el.style.display = withPending ? 'flex' : 'none';
-  wb_el.innerText = withPending;
+  db_el.style.display = depP ? 'flex' : 'none'; db_el.innerText = depP;
+  wb_el.style.display = withP ? 'flex' : 'none'; wb_el.innerText = withP;
 }
 
-// ══════════════ DASHBOARD ══════════════
+// ══ DASHBOARD ══
 function renderDashboard() {
   const users = Object.values(allUsers);
   const totalBal = users.reduce((a, u) => a + parseFloat(u.balance || 0), 0);
-  const totalInvested = users.reduce((a, u) => a + parseFloat(u.invested || 0), 0);
+  const totalInv = users.reduce((a, u) => a + parseFloat(u.invested || 0), 0);
   const totalPlans = users.reduce((a, u) => a + (u.myPlans ? u.myPlans.length : 0), 0);
   const deps = Object.values(allDeposits);
   const withs = Object.values(allWithdrawals);
-  const depPending = deps.filter(d => d.status === 'Pending').length;
-  const withPending = withs.filter(w => w.status === 'Pending').length;
-
+  const depP = deps.filter(d => d.status === 'Pending').length;
+  const withP = withs.filter(w => w.status === 'Pending').length;
   document.getElementById('ds-users').innerText = users.length;
   document.getElementById('hdr-users').innerText = users.length;
   document.getElementById('ds-balance').innerText = '$' + totalBal.toFixed(2);
-  document.getElementById('ds-invested').innerText = '$' + totalInvested.toFixed(2);
-  document.getElementById('ds-pending').innerText = depPending + withPending;
-  document.getElementById('ds-dep-pending').innerText = depPending;
-  document.getElementById('ds-with-pending').innerText = withPending;
+  document.getElementById('ds-invested').innerText = '$' + totalInv.toFixed(2);
+  document.getElementById('ds-pending').innerText = depP + withP;
+  document.getElementById('ds-dep-pending').innerText = depP;
+  document.getElementById('ds-with-pending').innerText = withP;
   document.getElementById('ds-plans').innerText = totalPlans;
 }
 
-// ══════════════ USERS ══════════════
+// ══ USERS ══
 function renderUsers(filter = '') {
   const list = document.getElementById('users-list');
   const entries = Object.entries(allUsers);
   const f = filter.toLowerCase();
-  const filtered = f
-    ? entries.filter(([k, u]) =>
-        (u.name || '').toLowerCase().includes(f) ||
-        (u.phone || '').includes(f) ||
-        (u.userId || '').toLowerCase().includes(f)
-      )
-    : entries;
-
+  const filtered = f ? entries.filter(([k, u]) =>
+    (u.name||'').toLowerCase().includes(f) ||
+    (u.phone||'').includes(f) ||
+    (u.userId||'').toLowerCase().includes(f)
+  ) : entries;
   document.getElementById('users-count-sub').innerText = `${filtered.length} of ${entries.length} users`;
-
-  if (!filtered.length) {
-    list.innerHTML = `<div class="empty-box"><i class="fas fa-user-slash"></i><p>No users found</p></div>`;
-    return;
-  }
-
+  if (!filtered.length) { list.innerHTML = `<div class="empty-box"><i class="fas fa-user-slash"></i><p>No users found</p></div>`; return; }
   list.innerHTML = filtered.map(([phone, u]) => `
     <div class="user-row">
       <div class="user-avatar">👤</div>
       <div class="user-info">
-        <div class="user-name">${u.name || 'Unknown'}</div>
+        <div class="user-name">${u.name||'Unknown'}</div>
         <div class="user-phone">${phone}</div>
         <div class="user-meta">
           <span class="meta-chip meta-balance">$${parseFloat(u.balance||0).toFixed(2)}</span>
@@ -841,21 +886,18 @@ function renderUsers(filter = '') {
         </div>
       </div>
       <div class="user-right">
-        <div class="user-id">${u.userId || '—'}</div>
+        <div class="user-id">${u.userId||'—'}</div>
         <div class="user-actions">
-          <button class="btn-sm btn-gold-sm" onclick="openBalanceModal('${phone}', '${u.name}', ${u.balance||0})"><i class="fas fa-coins"></i> Balance</button>
+          <button class="btn-sm btn-gold-sm" onclick="openBalanceModal('${phone}','${u.name}',${u.balance||0})"><i class="fas fa-coins"></i> Balance</button>
           <button class="btn-sm btn-red" onclick="confirmDelete('${phone}')"><i class="fas fa-trash"></i> Delete</button>
         </div>
       </div>
     </div>
   `).join('');
 }
+function filterUsers() { renderUsers(document.getElementById('search-inp').value); }
 
-function filterUsers() {
-  renderUsers(document.getElementById('search-inp').value);
-}
-
-// ══════════════ BALANCE MODAL ══════════════
+// ══ BALANCE MODAL ══
 function openBalanceModal(phone, name, bal) {
   document.getElementById('modal-phone').value = phone;
   document.getElementById('modal-user-info').innerText = `${name} (${phone})\nCurrent Balance: $${parseFloat(bal).toFixed(2)}`;
@@ -867,122 +909,108 @@ async function applyBalanceEdit() {
   const action = document.getElementById('bal-action').value;
   const amount = parseFloat(document.getElementById('bal-amount').value);
   if (isNaN(amount) || amount < 0) return toast('Enter valid amount!', 'e');
-  const u = allUsers[phone];
-  if (!u) return;
+  const u = allUsers[phone]; if (!u) return;
   let newBal = parseFloat(u.balance || 0);
   if (action === 'set') newBal = amount;
   else if (action === 'add') newBal += amount;
   else if (action === 'subtract') newBal = Math.max(0, newBal - amount);
-  await db.ref('users/' + phone).update({ balance: parseFloat(newBal.toFixed(2)) });
+  await db.ref('users/'+phone).update({ balance: parseFloat(newBal.toFixed(2)) });
   closeModal('modal-balance');
   toast('Balance updated!', 's');
 }
 
-// ══════════════ DELETE USER ══════════════
+// ══ DELETE USER ══
 function confirmDelete(phone) {
   document.getElementById('modal-confirm-title').innerText = 'Delete User';
   document.getElementById('modal-confirm-text').innerText = `Delete user ${phone}? This cannot be undone.`;
   document.getElementById('modal-confirm-btn').onclick = async () => {
-    await db.ref('users/' + phone).remove();
+    await db.ref('users/'+phone).remove();
     closeModal('modal-confirm');
     toast('User deleted!', 's');
   };
   document.getElementById('modal-confirm').style.display = 'flex';
 }
 
-// ══════════════ DEPOSITS ══════════════
+// ══ DEPOSITS ══
 function renderDeposits() {
   const list = document.getElementById('deposits-list');
   const entries = Object.entries(allDeposits);
-  const filtered = currentDepFilter === 'all'
-    ? entries
-    : entries.filter(([, d]) => d.status === currentDepFilter);
-
-  if (!filtered.length) {
-    list.innerHTML = `<div class="empty-box"><i class="fas fa-inbox"></i><p>No ${currentDepFilter === 'all' ? '' : currentDepFilter.toLowerCase()} requests</p></div>`;
-    return;
-  }
-
+  const filtered = currentDepFilter === 'all' ? entries : entries.filter(([,d]) => d.status === currentDepFilter);
+  if (!filtered.length) { list.innerHTML = `<div class="empty-box"><i class="fas fa-inbox"></i><p>No ${currentDepFilter==='all'?'':currentDepFilter.toLowerCase()} requests</p></div>`; return; }
   list.innerHTML = [...filtered].reverse().map(([key, d]) => `
     <div class="req-row">
       <div class="req-top">
-        <div class="req-info">
-          <div class="req-amount green">+$${parseFloat(d.amount||0).toFixed(2)}</div>
-          <div class="req-meta">${d.name || '—'} · ${d.phone || '—'}</div>
+        <div>
+          <div class="req-amount" style="color:var(--green);">+$${parseFloat(d.amount||0).toFixed(2)}</div>
+          <div class="req-meta">${d.name||'—'} · ${d.phone||'—'}</div>
         </div>
         <span class="status-badge ${d.status==='Pending'?'s-pending':d.status==='Approved'?'s-approved':'s-rejected'}">${d.status}</span>
       </div>
       <div class="req-detail-row">
-        <span class="req-tag"><i class="fas fa-exchange-alt"></i> ${d.method || '—'}</span>
-        <span class="req-tag"><i class="fas fa-hashtag"></i> ${d.tx || '—'}</span>
-        <span class="req-tag"><i class="fas fa-clock"></i> ${d.date || '—'}</span>
+        <span class="req-tag"><i class="fas fa-exchange-alt"></i> ${d.method||'—'}</span>
+        <span class="req-tag"><i class="fas fa-hashtag"></i> ${d.tx||'—'}</span>
+        <span class="req-tag"><i class="fas fa-clock"></i> ${d.date||'—'}</span>
       </div>
-      ${d.status === 'Pending' ? `
+      ${d.status==='Pending'?`
       <div class="req-actions">
-        <button class="btn-sm btn-green" onclick="approveDeposit('${key}', '${d.phone}', ${d.amount})"><i class="fas fa-check"></i> Approve</button>
+        <button class="btn-sm btn-green" onclick="approveDeposit('${key}','${d.phone}',${d.amount})"><i class="fas fa-check"></i> Approve</button>
         <button class="btn-sm btn-red" onclick="rejectDeposit('${key}')"><i class="fas fa-times"></i> Reject</button>
-      </div>` : ''}
+      </div>`:''}
     </div>
   `).join('');
 }
-
 function filterDeposits(status, el) {
   currentDepFilter = status;
   document.querySelectorAll('#page-deposits .tab-pill').forEach(b => b.classList.remove('active'));
   el.classList.add('active');
   renderDeposits();
 }
-
 async function approveDeposit(key, phone, amount) {
-  const user = allUsers[phone];
-  if (!user) return toast('User not found!', 'e');
-  const newBal = parseFloat(((user.balance || 0) + parseFloat(amount)).toFixed(2));
-  await db.ref('users/' + phone).update({ balance: newBal });
-  await db.ref('requests/deposits/' + key).update({ status: 'Approved' });
+  const user = allUsers[phone]; if (!user) return toast('User not found!', 'e');
+  const newBal = parseFloat(((user.balance||0)+parseFloat(amount)).toFixed(2));
+  await db.ref('users/'+phone).update({ balance: newBal });
+  await db.ref('requests/deposits/'+key).update({ status: 'Approved' });
   toast(`Deposit of $${amount} approved!`, 's');
 }
-
 async function rejectDeposit(key) {
-  await db.ref('requests/deposits/' + key).update({ status: 'Rejected' });
+  await db.ref('requests/deposits/'+key).update({ status: 'Rejected' });
   toast('Deposit rejected.', 'i');
 }
 
-// ══════════════ WITHDRAWALS ══════════════
+// ══ WITHDRAWALS ══
 function renderWithdrawals() {
   const list = document.getElementById('withdrawals-list');
   const entries = Object.entries(allWithdrawals);
-  const filtered = currentWithFilter === 'all'
-    ? entries
-    : entries.filter(([, w]) => w.status === currentWithFilter);
-
-  if (!filtered.length) {
-    list.innerHTML = `<div class="empty-box"><i class="fas fa-inbox"></i><p>No ${currentWithFilter === 'all' ? '' : currentWithFilter.toLowerCase()} requests</p></div>`;
-    return;
-  }
-
+  const filtered = currentWithFilter === 'all' ? entries : entries.filter(([,w]) => w.status === currentWithFilter);
+  if (!filtered.length) { list.innerHTML = `<div class="empty-box"><i class="fas fa-inbox"></i><p>No ${currentWithFilter==='all'?'':currentWithFilter.toLowerCase()} requests</p></div>`; return; }
   list.innerHTML = [...filtered].reverse().map(([key, w]) => `
     <div class="req-row">
       <div class="req-top">
-        <div class="req-info">
+        <div>
           <div class="req-amount" style="color:var(--red);">-$${parseFloat(w.amount||0).toFixed(2)}</div>
-          <div class="req-meta">${w.name || '—'} · ${w.phone || '—'}</div>
+          <div class="req-meta">${w.name||'—'} · ${w.phone||'—'}</div>
         </div>
         <span class="status-badge ${w.status==='Pending'?'s-pending':w.status==='Approved'?'s-approved':'s-rejected'}">${w.status}</span>
       </div>
       <div class="req-detail-row">
-        <span class="req-tag"><i class="fas fa-exchange-alt"></i> ${w.method || '—'}</span>
-        <span class="req-tag"><i class="fas fa-wallet"></i> ${w.account || '—'}</span>
-        <span class="req-tag"><i class="fas fa-clock"></i> ${w.date || '—'}</span>
+        <span class="req-tag"><i class="fas fa-exchange-alt"></i> ${w.method||'—'}</span>
+        <span class="req-tag"><i class="fas fa-clock"></i> ${w.date||'—'}</span>
       </div>
-      ${w.status === 'Pending' ? `
+      <!-- Account/Wallet with Copy Button -->
+      <div class="account-copy-row">
+        <span class="account-copy-val">${w.account||'—'}</span>
+        <button class="copy-small-btn" onclick="copyAccount('${(w.account||'').replace(/'/g,"\\'")}')">
+          <i class="fas fa-copy"></i> Copy
+        </button>
+      </div>
+      ${w.status==='Pending'?`
       <div class="req-actions">
-        <button class="btn-sm btn-green" onclick="approveWithdraw('${key}', '${w.phone}')"><i class="fas fa-check"></i> Mark Done</button>
-        <button class="btn-sm btn-red" onclick="rejectWithdraw('${key}', '${w.phone}', ${w.amount})"><i class="fas fa-times"></i> Reject & Refund</button>
-      </div>` : ''}
+        <button class="btn-sm btn-green" onclick="approveWithdraw('${key}','${w.phone}')"><i class="fas fa-check"></i> Mark Done</button>
+        <button class="btn-sm btn-red" onclick="rejectWithdraw('${key}','${w.phone}',${w.amount})"><i class="fas fa-times"></i> Reject &amp; Refund</button>
+      </div>`:''}
     </div>
   `).join('');
 }
-
 function filterWithdrawals(status, el) {
   currentWithFilter = status;
   document.querySelectorAll('#page-withdrawals .tab-pill').forEach(b => b.classList.remove('active'));
@@ -990,47 +1018,52 @@ function filterWithdrawals(status, el) {
   renderWithdrawals();
 }
 
+// ── Copy Account Number ──
+function copyAccount(account) {
+  if (!account || account === '—') return toast('No account to copy!', 'e');
+  navigator.clipboard.writeText(account).then(() => toast('Account copied: ' + account, 's')).catch(() => {
+    const ta = document.createElement('textarea');
+    ta.value = account; document.body.appendChild(ta); ta.select();
+    document.execCommand('copy'); document.body.removeChild(ta);
+    toast('Account copied!', 's');
+  });
+}
+
 async function approveWithdraw(key, phone) {
-  await db.ref('requests/withdraws/' + key).update({ status: 'Approved' });
-  // Update user withdraw history status
+  await db.ref('requests/withdraws/'+key).update({ status: 'Approved' });
   const user = allUsers[phone];
   if (user && user.withdraws) {
+    let updated = false;
     const ws = user.withdraws.map(w => {
-      if (w.status === 'Pending') return { ...w, status: 'Done' };
+      if (w.status === 'Pending' && !updated) { updated = true; return {...w, status:'Done'}; }
       return w;
     });
-    await db.ref('users/' + phone).update({ withdraws: ws });
+    await db.ref('users/'+phone).update({ withdraws: ws });
   }
   toast('Withdrawal approved!', 's');
 }
-
 async function rejectWithdraw(key, phone, amount) {
   const user = allUsers[phone];
   if (user) {
-    const refundedBal = parseFloat(((user.balance || 0) + parseFloat(amount)).toFixed(2));
-    await db.ref('users/' + phone).update({ balance: refundedBal });
+    const refundedBal = parseFloat(((user.balance||0)+parseFloat(amount)).toFixed(2));
+    await db.ref('users/'+phone).update({ balance: refundedBal });
   }
-  await db.ref('requests/withdraws/' + key).update({ status: 'Rejected' });
-  toast('Rejected & refunded $' + amount, 'i');
+  await db.ref('requests/withdraws/'+key).update({ status: 'Rejected' });
+  toast('Rejected & refunded $'+amount, 'i');
 }
 
-// ══════════════ PLANS ══════════════
+// ══ PLANS ══
 function loadPlans() {
   db.ref('appPlans').on('value', snap => {
     const list = document.getElementById('plans-list');
     const plans = snap.val() || {};
     const entries = Object.entries(plans);
     document.getElementById('plans-count').innerText = entries.length;
-
-    if (!entries.length) {
-      list.innerHTML = `<div class="empty-box"><i class="fas fa-server"></i><p>No plans yet. Add one above.</p></div>`;
-      return;
-    }
-
+    if (!entries.length) { list.innerHTML = `<div class="empty-box"><i class="fas fa-server"></i><p>No plans yet.</p></div>`; return; }
     list.innerHTML = entries.map(([key, p]) => `
       <div class="plan-admin-card">
         <div class="plan-icon-wrap">
-          ${p.imageUrl ? `<img src="${p.imageUrl}" onerror="this.style.display='none'">` : p.icon || '💎'}
+          ${p.imageUrl ? `<img src="${p.imageUrl}" onerror="this.style.display='none'">` : (p.icon||'💎')}
         </div>
         <div class="plan-admin-info">
           <div class="plan-admin-name">${p.title}</div>
@@ -1049,7 +1082,6 @@ function loadPlans() {
     `).join('');
   });
 }
-
 async function savePlan() {
   const key = document.getElementById('plan-edit-key').value;
   const title = document.getElementById('p-title').value.trim();
@@ -1060,74 +1092,58 @@ async function savePlan() {
   const imageUrl = document.getElementById('p-image').value.trim();
   if (!title || isNaN(price) || isNaN(daily) || isNaN(days)) return toast('Fill all fields!', 'e');
   const plan = { title, price, daily, days, icon, imageUrl };
-  if (key) { await db.ref('appPlans/' + key).update(plan); toast('Plan updated!', 's'); }
+  if (key) { await db.ref('appPlans/'+key).update(plan); toast('Plan updated!', 's'); }
   else { await db.ref('appPlans').push(plan); toast('Plan added!', 's'); }
   clearPlanForm();
 }
-
 function editPlan(key) {
-  db.ref('appPlans/' + key).once('value', snap => {
+  db.ref('appPlans/'+key).once('value', snap => {
     const p = snap.val();
     document.getElementById('plan-edit-key').value = key;
     document.getElementById('p-title').value = p.title;
     document.getElementById('p-price').value = p.price;
     document.getElementById('p-daily').value = p.daily;
     document.getElementById('p-days').value = p.days;
-    document.getElementById('p-icon').value = p.icon || '';
-    document.getElementById('p-image').value = p.imageUrl || '';
+    document.getElementById('p-icon').value = p.icon||'';
+    document.getElementById('p-image').value = p.imageUrl||'';
     document.getElementById('plan-btn-txt').innerText = 'Update Plan';
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-    document.querySelector('.scroll-area').scrollTo({ top: 0, behavior: 'smooth' });
+    document.querySelector('.scroll-area').scrollTo({ top:0, behavior:'smooth' });
   });
 }
-
 function deletePlan(key) {
   document.getElementById('modal-confirm-title').innerText = 'Delete Plan';
-  document.getElementById('modal-confirm-text').innerText = 'Delete this mining plan? Existing user nodes are unaffected.';
+  document.getElementById('modal-confirm-text').innerText = 'Delete this mining plan?';
   document.getElementById('modal-confirm-btn').onclick = async () => {
-    await db.ref('appPlans/' + key).remove();
-    closeModal('modal-confirm');
-    toast('Plan deleted!', 's');
+    await db.ref('appPlans/'+key).remove();
+    closeModal('modal-confirm'); toast('Plan deleted!', 's');
   };
   document.getElementById('modal-confirm').style.display = 'flex';
 }
-
 function clearPlanForm() {
-  document.getElementById('plan-edit-key').value = '';
-  document.getElementById('p-title').value = '';
-  document.getElementById('p-price').value = '';
-  document.getElementById('p-daily').value = '';
-  document.getElementById('p-days').value = '';
-  document.getElementById('p-icon').value = '';
-  document.getElementById('p-image').value = '';
+  ['plan-edit-key','p-title','p-price','p-daily','p-days','p-icon','p-image'].forEach(id => document.getElementById(id).value = '');
   document.getElementById('plan-btn-txt').innerText = 'Save Plan';
 }
 
-// ══════════════ METHODS ══════════════
+// ══ DEPOSIT METHODS ══
 function loadMethods() {
   db.ref('depositMethods').on('value', snap => {
     const list = document.getElementById('methods-list');
     const methods = snap.val() || {};
     const entries = Object.entries(methods);
     document.getElementById('methods-count').innerText = entries.length;
-
-    if (!entries.length) {
-      list.innerHTML = `<div class="empty-box"><i class="fas fa-credit-card"></i><p>No methods yet. Add one above.</p></div>`;
-      return;
-    }
-
+    if (!entries.length) { list.innerHTML = `<div class="empty-box"><i class="fas fa-credit-card"></i><p>No methods yet.</p></div>`; return; }
     list.innerHTML = entries.map(([key, m]) => `
       <div class="method-admin-row">
         <div class="method-logo">
-          ${m.logoUrl ? `<img src="${m.logoUrl}" onerror="this.style.display='none'">` : (m.icon || '💳')}
+          ${m.logoUrl ? `<img src="${m.logoUrl}" onerror="this.style.display='none'">` : (m.icon||'💳')}
         </div>
         <div class="method-admin-info">
           <div class="method-admin-name">${m.name}</div>
-          <div class="method-admin-num">${m.number || 'Not set'}</div>
-          <span class="method-status ${m.active ? 'm-active' : 'm-inactive'}">${m.active ? 'Active' : 'Inactive'}</span>
+          <div class="method-admin-num">${m.number||'Not set'}</div>
+          <span class="method-status ${m.active?'m-active':'m-inactive'}">${m.active?'Active':'Inactive'}</span>
         </div>
         <div style="display:flex;flex-direction:column;gap:6px;align-items:flex-end;">
-          <div style="font-size:9px;color:var(--text3);font-weight:700;">Min $${m.minDeposit || 2}</div>
+          <div style="font-size:9px;color:var(--text3);font-weight:700;">Min $${m.minDeposit||2}</div>
           <button class="btn-sm btn-gold-sm" onclick="editMethod('${key}')"><i class="fas fa-pen"></i> Edit</button>
           <button class="btn-sm btn-red" onclick="deleteMethod('${key}')"><i class="fas fa-trash"></i></button>
         </div>
@@ -1135,7 +1151,6 @@ function loadMethods() {
     `).join('');
   });
 }
-
 async function saveMethod() {
   const key = document.getElementById('method-edit-key').value;
   const name = document.getElementById('m-name').value.trim();
@@ -1144,51 +1159,109 @@ async function saveMethod() {
   const minDeposit = parseFloat(document.getElementById('m-min').value) || 2;
   const active = document.getElementById('m-active').value === 'true';
   const logoUrl = document.getElementById('m-logo').value.trim();
-  if (!name || !number) return toast('Name and number are required!', 'e');
+  if (!name || !number) return toast('Name and number required!', 'e');
   const method = { name, icon, number, minDeposit, active, logoUrl };
-  if (key) { await db.ref('depositMethods/' + key).update(method); toast('Method updated!', 's'); }
+  if (key) { await db.ref('depositMethods/'+key).update(method); toast('Method updated!', 's'); }
   else { await db.ref('depositMethods').push(method); toast('Method added!', 's'); }
   clearMethodForm();
 }
-
 function editMethod(key) {
-  db.ref('depositMethods/' + key).once('value', snap => {
+  db.ref('depositMethods/'+key).once('value', snap => {
     const m = snap.val();
     document.getElementById('method-edit-key').value = key;
-    document.getElementById('m-name').value = m.name || '';
-    document.getElementById('m-icon').value = m.icon || '';
-    document.getElementById('m-number').value = m.number || '';
-    document.getElementById('m-min').value = m.minDeposit || 2;
-    document.getElementById('m-active').value = m.active ? 'true' : 'false';
-    document.getElementById('m-logo').value = m.logoUrl || '';
+    document.getElementById('m-name').value = m.name||'';
+    document.getElementById('m-icon').value = m.icon||'';
+    document.getElementById('m-number').value = m.number||'';
+    document.getElementById('m-min').value = m.minDeposit||2;
+    document.getElementById('m-active').value = m.active?'true':'false';
+    document.getElementById('m-logo').value = m.logoUrl||'';
     document.getElementById('method-btn-txt').innerText = 'Update Method';
-    document.querySelector('.scroll-area').scrollTo({ top: 0, behavior: 'smooth' });
+    document.querySelector('.scroll-area').scrollTo({ top:0, behavior:'smooth' });
   });
 }
-
 function deleteMethod(key) {
   document.getElementById('modal-confirm-title').innerText = 'Delete Method';
-  document.getElementById('modal-confirm-text').innerText = 'Delete this payment method?';
+  document.getElementById('modal-confirm-text').innerText = 'Delete this deposit method?';
   document.getElementById('modal-confirm-btn').onclick = async () => {
-    await db.ref('depositMethods/' + key).remove();
-    closeModal('modal-confirm');
-    toast('Method deleted!', 's');
+    await db.ref('depositMethods/'+key).remove();
+    closeModal('modal-confirm'); toast('Method deleted!', 's');
   };
   document.getElementById('modal-confirm').style.display = 'flex';
 }
-
 function clearMethodForm() {
-  document.getElementById('method-edit-key').value = '';
-  document.getElementById('m-name').value = '';
-  document.getElementById('m-icon').value = '';
-  document.getElementById('m-number').value = '';
-  document.getElementById('m-min').value = '';
+  ['method-edit-key','m-name','m-icon','m-number','m-min','m-logo'].forEach(id => document.getElementById(id).value = '');
   document.getElementById('m-active').value = 'true';
-  document.getElementById('m-logo').value = '';
   document.getElementById('method-btn-txt').innerText = 'Save Method';
 }
 
-// ══════════════ SETTINGS ══════════════
+// ══ WITHDRAWAL METHODS ══
+function loadWithdrawMethods() {
+  db.ref('withdrawMethods').on('value', snap => {
+    const list = document.getElementById('wmethods-list');
+    const methods = snap.val() || {};
+    const entries = Object.entries(methods);
+    document.getElementById('wmethods-count').innerText = entries.length;
+    if (!entries.length) { list.innerHTML = `<div class="empty-box"><i class="fas fa-money-bill-wave"></i><p>No withdrawal methods yet.</p></div>`; return; }
+    list.innerHTML = entries.map(([key, m]) => `
+      <div class="method-admin-row">
+        <div class="method-logo">
+          ${m.logoUrl ? `<img src="${m.logoUrl}" onerror="this.style.display='none'">` : (m.icon||'💸')}
+        </div>
+        <div class="method-admin-info">
+          <div class="method-admin-name">${m.name}</div>
+          <div class="method-admin-num">Min $${m.minAmount||6}</div>
+          <span class="method-status ${m.active?'m-active':'m-inactive'}">${m.active?'Active':'Inactive'}</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:6px;align-items:flex-end;">
+          <button class="btn-sm btn-gold-sm" onclick="editWithdrawMethod('${key}')"><i class="fas fa-pen"></i> Edit</button>
+          <button class="btn-sm btn-red" onclick="deleteWithdrawMethod('${key}')"><i class="fas fa-trash"></i></button>
+        </div>
+      </div>
+    `).join('');
+  });
+}
+async function saveWithdrawMethod() {
+  const key = document.getElementById('wm-edit-key').value;
+  const name = document.getElementById('wm-name').value.trim();
+  const icon = document.getElementById('wm-icon').value.trim() || '💸';
+  const minAmount = parseFloat(document.getElementById('wm-min').value) || 6;
+  const active = document.getElementById('wm-active').value === 'true';
+  const logoUrl = document.getElementById('wm-logo').value.trim();
+  if (!name) return toast('Method name is required!', 'e');
+  const method = { name, icon, minAmount, active, logoUrl };
+  if (key) { await db.ref('withdrawMethods/'+key).update(method); toast('Withdrawal method updated!', 's'); }
+  else { await db.ref('withdrawMethods').push(method); toast('Withdrawal method added!', 's'); }
+  clearWithdrawMethodForm();
+}
+function editWithdrawMethod(key) {
+  db.ref('withdrawMethods/'+key).once('value', snap => {
+    const m = snap.val();
+    document.getElementById('wm-edit-key').value = key;
+    document.getElementById('wm-name').value = m.name||'';
+    document.getElementById('wm-icon').value = m.icon||'';
+    document.getElementById('wm-min').value = m.minAmount||6;
+    document.getElementById('wm-active').value = m.active?'true':'false';
+    document.getElementById('wm-logo').value = m.logoUrl||'';
+    document.getElementById('wm-btn-txt').innerText = 'Update Method';
+    document.querySelector('.scroll-area').scrollTo({ top:0, behavior:'smooth' });
+  });
+}
+function deleteWithdrawMethod(key) {
+  document.getElementById('modal-confirm-title').innerText = 'Delete Withdrawal Method';
+  document.getElementById('modal-confirm-text').innerText = 'Delete this withdrawal method?';
+  document.getElementById('modal-confirm-btn').onclick = async () => {
+    await db.ref('withdrawMethods/'+key).remove();
+    closeModal('modal-confirm'); toast('Method deleted!', 's');
+  };
+  document.getElementById('modal-confirm').style.display = 'flex';
+}
+function clearWithdrawMethodForm() {
+  ['wm-edit-key','wm-name','wm-icon','wm-min','wm-logo'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('wm-active').value = 'true';
+  document.getElementById('wm-btn-txt').innerText = 'Save Method';
+}
+
+// ══ SETTINGS ══
 async function saveSettings() {
   const notice = document.getElementById('s-notice').value.trim();
   const bannerUrl = document.getElementById('s-banner').value.trim();
@@ -1196,38 +1269,37 @@ async function saveSettings() {
   toast('Settings saved!', 's');
 }
 
-// ══════════════ NAVIGATE ══════════════
+// ══ NAVIGATE ══
 function navigate(page) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.getElementById('page-' + page).classList.add('active');
+  document.getElementById('page-'+page).classList.add('active');
   document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
   const navBtn = document.querySelector(`.nav-btn[onclick="navigate('${page}')"]`);
   if (navBtn) navBtn.classList.add('active');
-  currentPage = page;
-  document.querySelector('.scroll-area').scrollTo({ top: 0 });
+  document.querySelector('.scroll-area').scrollTo({ top:0 });
   if (page === 'plans') loadPlans();
   if (page === 'methods') loadMethods();
+  if (page === 'wmethods') loadWithdrawMethods();
 }
 
-// ══════════════ MODAL ══════════════
+// ══ MODAL ══
 function closeModal(id) { document.getElementById(id).style.display = 'none'; }
 document.querySelectorAll('.modal-overlay').forEach(m => {
   m.addEventListener('click', e => { if (e.target === m) m.style.display = 'none'; });
 });
 
-// ══════════════ TOAST ══════════════
-function toast(msg, type = 'i') {
+// ══ TOAST ══
+function toast(msg, type='i') {
   const t = document.getElementById('toast');
-  const icon = type === 's' ? 'check-circle' : type === 'e' ? 'times-circle' : 'info-circle';
+  const icon = type==='s'?'check-circle':type==='e'?'times-circle':'info-circle';
   t.className = `show ${type}`;
   t.innerHTML = `<i class="fas fa-${icon}"></i> ${msg}`;
   setTimeout(() => t.className = type, 2800);
 }
 
-// Inputs need user-select
 document.addEventListener('touchstart', e => {
   if (['INPUT','SELECT','TEXTAREA'].includes(e.target.tagName)) e.stopPropagation();
-}, { passive: true });
+}, { passive:true });
 </script>
 </body>
 </html>
